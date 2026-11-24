@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
@@ -223,6 +223,15 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
   .side.open{transform:none}
   .side .nav{justify-content:flex-start}
   .s-meta{margin-top:8px}
+  /* 标签栏：不换行，一行横向滑动 */
+  .tabs{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:20px;padding-bottom:0}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button{flex:none}
+  /* 工具行：手机上改成上下堆叠，避免中间列被挤扁 */
+  .row{grid-template-columns:1fr;gap:4px;padding:14px 0}
+  .row .n{font-size:14.5px}
+  .row .d{font-size:13px}
+  .row .m{text-align:left;font-size:11px;margin-top:2px}
 }
 </style>
 </head>
@@ -390,14 +399,6 @@ const SKILLS = [
   ["复盘迭代","awesome-stock-quant-skills","选股与量化工具链：因子评分、共识排序、回测","Serennity007","51","https://github.com/Serennity007/awesome-stock-quant-skills"],
   ["复盘迭代","awesome-quant","量化资源大全：库、数据、课程、论文","wilsonfreitas","30.9k","https://github.com/wilsonfreitas/awesome-quant"],
   ["复盘迭代","ima-skills","把笔记与知识库接进 AI，随时记录与调用","SkillHub","584 次调用","https://www.skillhub.cn/skills/tencent-adm/ima-skills"],
-  {name:"张坤",school:"中国实践",line:"长期持有能持续创造自由现金流的生意，别在意短期排名。",
-   record:"易方达蓝筹精选等产品管理规模曾超千亿；连续多年在季报里写同一套逻辑，被称「最像巴菲特的中文季报」。",
-   points:["先看这家公司十年后还在不在、还赚不赚钱","不预测市场，只判断生意值不值这个价","规模变大是收益的敌人：小资金反而更容易做对"],
-   book:null,off:{t:"易方达官网 · 季报原文",u:"https://www.efunds.com.cn"}},
-  {name:"冯柳",school:"中国实践",line:"弱者体系：先假设自己会看错，再决定买多少。",
-   record:"民间出身（网名「茅台03」），后任高毅资产董事总经理；公开的组合长期跑赢指数，方法论全部来自公开分享。",
-   points:["承认自己是弱者：不预测，只做赔率合适的下注","先想「跌了我受不受得了」，再想「涨了能赚多少」","逆向不是抄底，是在别人不得不卖的时候接"],
-   book:null,off:null},
 ];
 // 词典：先认「你是哪种投资者」，再看你该懂哪些词
 const DIC = "https://dictionary.mangofolio.com/dictionary?q=";
@@ -924,7 +925,7 @@ function skillView(){
   const grid=el("div","skgrid");
   SKILLS.filter(s=>skillCat==="全部"||(CATMAP[s[0]]||s[0])===skillCat).forEach(([cat,name,blurb,author,stars,url])=>{
     const a=el("a","skcard");
-    a.href=url; a.target="_blank"; a.rel="noopener"; a.setAttribute("data-track","resource_open");a.setAttribute("data-track-sub",n);
+    a.href=url; a.target="_blank"; a.rel="noopener"; a.setAttribute("data-track","resource_open");a.setAttribute("data-track-sub",name);
     const top=el("div","sk-top");
     top.appendChild(el("span","sk-cat",CATMAP[cat]||cat));
     top.appendChild(el("span","sk-arr","↗"));
