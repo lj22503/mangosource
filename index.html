@@ -206,6 +206,8 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
 .su{font-size:11.5px;color:var(--accent);margin-top:3px}
 .sp{margin-top:6px;background:#f4f2ec;border-radius:8px;padding:10px 12px}
 .ptext{margin:6px 0 0;font-size:12px;line-height:1.75;color:var(--soft);white-space:pre-wrap;font-family:var(--sans)}
+.s-about p .go{display:inline-block;margin-left:6px;font-size:12.5px;color:#c2571a;text-decoration:none;vertical-align:1px}
+.s-about p .go:hover{opacity:.7}
 </style>
 </head>
 <body>
@@ -216,7 +218,7 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
         <span class="s-mark">M</span><span class="s-word">MangoSource</span>
       </a>
       <div class="s-about">
-        <p>我是燃冰，10 年金融产品人，目前正在做一些投资平权的事情，这里是我挑选的资源合集。</p>
+        <p>我是燃冰，10 年金融产品人，目前正在做一些投资平权的事情<a class="go" href="https://ranbing.mangofolio.com/" target="_blank" rel="noopener" aria-label="燃冰主页">↗</a><br/>这里是我挑选的资源合集。</p>
       </div>
     </div>
     <nav class="nav" id="nav">
@@ -232,7 +234,7 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
       <div class="s-promo">
         <div class="s-promo-name">燃冰的投资平权</div>
         <div class="s-promo-desc">欢迎进来一起探索如何用 AI 赋能投资和决策。</div>
-        <a class="s-promo-cta" href="https://wx.zsxq.com/group/15554842555282" target="_blank" rel="noopener">加入圈子 ↗</a>
+        <a class="s-promo-cta" data-track="join_circle" href="https://wx.zsxq.com/group/15554842555282" target="_blank" rel="noopener">加入圈子 ↗</a>
       </div>
     </div>
   </aside>
@@ -750,7 +752,7 @@ function sceneView(){
   const body=$("#body"); body.innerHTML="";
   const g=el("div","grid");
   SCENES.filter(s=>tag==="全部"||s.tags.includes(tag)).forEach(s=>{
-    const c=el("button","card"); c.onclick=()=>openScene(s);
+    const c=el("button","card"); c.setAttribute("data-track","scene_open");c.setAttribute("data-track-sub",s.t);c.onclick=()=>openScene(s);
     c.appendChild(el("div","say",s.t));
     c.appendChild(el("div","sv",s.v));
     const w=el("div","who");
@@ -795,14 +797,14 @@ function promptView(){
   cats.forEach(c=>{
     const b=el("button",null,c);
     b.setAttribute("aria-pressed",c===promptCat);
-    b.onclick=()=>{ promptCat=c; promptView(); };
+    b.setAttribute("data-track","prompt_cat");b.setAttribute("data-track-sub",c);b.onclick=()=>{ promptCat=c; promptView(); };
     tabs.appendChild(b);
   });
   body.appendChild(tabs);
   const grid=el("div","skgrid");
   PROMPTS.filter(p=>promptCat==="全部"||p[0]===promptCat).forEach(p=>{
     const c=el("button","skcard");
-    c.onclick=()=>openPrompt(p);
+    c.setAttribute("data-track","prompt_open");c.setAttribute("data-track-sub",p[2]);c.onclick=()=>openPrompt(p);
     const top=el("div","sk-top");
     top.appendChild(el("span","sk-cat",p[0]));
     top.appendChild(el("span","sk-arr","↗"));
@@ -832,7 +834,7 @@ function wordView(){
   const strip=el("div","skgrid");
   DICT_ENTRIES.forEach(([n,d,want,url])=>{
     const a=el("a","skcard");
-    a.href=url; a.target="_blank"; a.rel="noopener";
+    a.href=url; a.target="_blank"; a.rel="noopener"; a.setAttribute("data-track","resource_open");a.setAttribute("data-track-sub",n);
     const top=el("div","sk-top");
     top.appendChild(el("span","sk-cat","查词"));
     top.appendChild(el("span","sk-arr","↗"));
@@ -897,14 +899,14 @@ function skillView(){
   SKILL_CATS.forEach(c=>{
     const b=el("button",null,c);
     b.setAttribute("aria-pressed",c===skillCat);
-    b.onclick=()=>{ skillCat=c; skillView(); };
+    b.setAttribute("data-track","skill_cat");b.setAttribute("data-track-sub",c);b.onclick=()=>{ skillCat=c; skillView(); };
     tabs.appendChild(b);
   });
   body.appendChild(tabs);
   const grid=el("div","skgrid");
   SKILLS.filter(s=>skillCat==="全部"||(CATMAP[s[0]]||s[0])===skillCat).forEach(([cat,name,blurb,author,stars,url])=>{
     const a=el("a","skcard");
-    a.href=url; a.target="_blank"; a.rel="noopener";
+    a.href=url; a.target="_blank"; a.rel="noopener"; a.setAttribute("data-track","resource_open");a.setAttribute("data-track-sub",n);
     const top=el("div","sk-top");
     top.appendChild(el("span","sk-cat",CATMAP[cat]||cat));
     top.appendChild(el("span","sk-arr","↗"));
@@ -940,7 +942,7 @@ function masterView(){
   const grid=el("div","mgrid");
   MASTERS.filter(m=>masterSchool==="全部"||m.school===masterSchool).forEach(m=>{
     const c=el("button","mcard");
-    c.onclick=()=>openMaster(m);
+    c.setAttribute("data-track","master_open");c.setAttribute("data-track-sub",m.name);c.onclick=()=>openMaster(m);
     c.appendChild(el("div","mc-name",m.name));
     c.appendChild(el("div","mc-line","「"+m.line+"」"));
     c.appendChild(el("div","mc-rec",m.record));
@@ -969,7 +971,7 @@ function openMaster(m){
 }
 
 function paint(){
-  document.querySelectorAll("#nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.view===view));
+  document.querySelectorAll("#nav button").forEach(function(b){ b.setAttribute("aria-current",b.dataset.view===view); b.setAttribute("data-track","nav"); b.setAttribute("data-track-sub",b.dataset.view); });
   renderTabs();
   if(view==="scene")sceneView();
   else if(view==="tool")rowsView("工具","想查数据、看行情、找研报，从这里进。",TOOLS);
@@ -1020,7 +1022,7 @@ function openPrompt(p){
   $("#ov").classList.add("on"); document.body.style.overflow="hidden";
   const btn=$("#copybtn");
   btn.onclick=async()=>{
-    try{ await navigator.clipboard.writeText(plain); btn.textContent="已复制 ✓"; }
+    try{ await navigator.clipboard.writeText(plain); btn.textContent="已复制 ✓"; trackEvent("copy_prompt",{sub:p[2]}); }
     catch(e){ const t=document.createElement("textarea"); t.value=plain; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); btn.textContent="已复制 ✓"; }
     setTimeout(()=>{btn.textContent="复制这段"},1800);
   };
@@ -1039,6 +1041,38 @@ function openBook(name){
 }
 function closePanel(){$("#ov").classList.remove("on");document.body.style.overflow=""}
 document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>{view=b.dataset.view;paint()});
+// ---- 埋点：轻量、无第三方依赖 ----
+// 事件名与 ranbing 主页保持一致（cta_click），ref/utm 透传
+const TRACK_ENDPOINT = ""; // 填 Cloudflare Web Analytics / 自建收集端点后自动上报
+function trackEvent(cta, extra) {
+  try {
+    var q = new URL(location.href).searchParams;
+    var payload = Object.assign({
+      event: "cta_click",
+      cta: cta,
+      ref: q.get("ref") || "direct",
+      page: location.pathname,
+      utm_source: q.get("utm_source") || "",
+      utm_medium: q.get("utm_medium") || "",
+      utm_campaign: q.get("utm_campaign") || "",
+      ts: Date.now()
+    }, extra || {});
+    (window.dataLayer = window.dataLayer || []).push(payload);
+    if (TRACK_ENDPOINT && navigator.sendBeacon) {
+      navigator.sendBeacon(TRACK_ENDPOINT, JSON.stringify(payload));
+    }
+    if (location.search.indexOf("debug=1") > -1) console.log("[track]", payload);
+  } catch (e) {}
+}
+document.addEventListener("click", function (e) {
+  var el = e.target.closest && e.target.closest("[data-track]");
+  if (!el) return;
+  var name = el.getAttribute("data-track");
+  var sub = el.getAttribute("data-track-sub") || "";
+  trackEvent(name, sub ? { sub: sub } : null);
+}, true);
+trackEvent("page_view", { view: view });
+
 $("#logo").addEventListener("click",e=>{e.preventDefault();view="scene";paint();});
 document.querySelectorAll("#nav .soon").forEach(function(s){
   s.addEventListener("click",function(){
@@ -1053,6 +1087,10 @@ paint();
 </script>
 </body>
 </html>
+
+
+
+
 
 
 
