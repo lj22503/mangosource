@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1440px;overflow:hidden}
+body{
+  background:#fcfbf8;color:#1b1a17;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  display:flex;flex-direction:column;padding:76px 80px 64px;
+  position:relative;
+}
+body:before{content:"";position:absolute;left:0;top:0;width:10px;height:100%;background:#c2571a}
+.brand{display:flex;align-items:center;gap:14px;font-size:28px;font-weight:600;letter-spacing:.01em}
+.mark{width:44px;height:44px;border-radius:11px;background:#c2571a;color:#fff;display:grid;place-items:center;font-size:24px;font-weight:600}
+.tag{margin-top:64px;display:inline-block;font-size:22px;color:#c2571a;background:#fbeee4;border-radius:8px;padding:7px 16px;align-self:flex-start}
+h1{font-family:"Noto Serif SC","Songti SC",Georgia,serif;font-size:86px;line-height:1.18;font-weight:600;margin-top:28px;letter-spacing:.01em}
+.lead{font-family:"Noto Serif SC","Songti SC",Georgia,serif;font-size:32px;line-height:1.5;color:#3f3d38;margin-top:24px}
+.qs{margin-top:56px;display:flex;flex-direction:column;gap:30px}
+.q{display:flex;gap:22px;align-items:flex-start}
+.n{flex:none;width:44px;height:44px;border-radius:50%;border:1.5px solid #d6d3c9;color:#77756c;font-size:22px;display:grid;place-items:center;margin-top:4px}
+.qt{font-size:34px;font-weight:600;line-height:1.3}
+.qd{font-size:24px;color:#77756c;line-height:1.5;margin-top:8px}
+.how{margin-top:auto;border-top:1px solid #e8e6df;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end}
+.how .k{font-size:22px;color:#77756c}
+.how .v{font-size:26px;color:#1b1a17;margin-top:8px;line-height:1.5}
+.foot{text-align:right;font-size:20px;color:#a8a69c;line-height:1.7}
+.foot b{display:block;font-size:24px;color:#3f3d38;font-weight:600;margin-bottom:4px}
+</style>
+</head>
+<body>
+  <div class="brand"><span class="mark">M</span>MangoSource</div>
+  <span class="tag">能不能买</span>
+  <h1>这只，现在能买吗</h1>
+  <div class="lead">把这一句拆成五问，缺哪一问，就是答案。</div>
+
+  <div class="qs">
+    <div class="q"><div class="n">1</div><div><div class="qt">信息源：我从哪听来的</div><div class="qd">那是事实，还是别人想让我看到的观点</div></div></div>
+    <div class="q"><div class="n">2</div><div><div class="qt">生意：它靠什么赚钱</div><div class="qd">一句话说清；护城河是什么、能撑几年</div></div></div>
+    <div class="q"><div class="n">3</div><div><div class="qt">价格：现在贵还是便宜</div><div class="qd">看估值分位，不看点位</div></div></div>
+    <div class="q"><div class="n">4</div><div><div class="qt">赔率：最坏亏多少</div><div class="qd">用近一年波动估，最好与最坏的比例是多少</div></div></div>
+    <div class="q"><div class="n">5</div><div><div class="qt">我自己：这笔钱多久要用</div><div class="qd">能扛多大回撤，扛不住的一律不买</div></div></div>
+  </div>
+
+  <div class="how">
+    <div>
+      <div class="k">怎么用</div>
+      <div class="v">打开 MangoSource → 投资提示词 → 复制这段<br/>粘给你在用的 AI，它会把五问逐个回答</div>
+    </div>
+    <div class="foot"><b>MangoSource</b>燃冰的投资平权<br/>mangofolio</div>
+  </div>
+</body>
+</html>
