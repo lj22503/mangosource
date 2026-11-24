@@ -65,6 +65,8 @@
 | **变量名错误只在运行时炸** | `data-track-sub` 用了不存在的 `n` | 批量替换时没检查上下文变量 | 批量替换后必须 `node --check` + 逐页真机点一遍 |
 | **SSH 推送偶发被重置** | `Connection reset by ... port 443` | 网络抖动 | 重试循环（3–5 次，间隔 5 秒）就够了，别换协议 |
 | **Pages 开不了** | 仓库私有 + gh 未登录 | 免费账号私有仓库不支持 Pages | 项目一开始就定：**公开仓库 + Pages**，或直接 Cloudflare Pages |
+| **开 Pages 后 push 被拒** | 在 GitHub 上开 Pages / 绑自定义域名会**生成提交**（Create CNAME → Delete CNAME），远端多出本地没有的 commit，push 报 `non-fast-forward` | 本地和网页端同时改仓库 | 先 `git fetch origin` → `git rebase origin/main` → 再 push；以后**只在本地改，网页端只读** |
+| **CDN 缓存骗人** | push 成功但页面还是旧的，以为没部署 | GitHub Pages 的 HTML 有几分钟缓存 | 用 `?v=时间戳` 破缓存再验证；`raw.githubusercontent.com` 看分支真实内容 |
 | **标题忘记改** | 上线后 title 还是"投资资源地图…" | 只改了界面文案 | 发布清单加一条：title / description / og 图 |
 
 ### 阶段 6：发布与运营
