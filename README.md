@@ -10,7 +10,7 @@
 | 投资 Skill | 52 个，GitHub 与 SkillHub 上真实在用的，标作者与星数 |
 | 投资词典 | 9 类身份 × 12 个词，点词进词典 |
 | 投资提示词 | 6 条「say to AI」提示词，按你会问的那句话分 tab，可一键复制 |
-| 投资知识库 | 16 个 ima 知识库，按品类分（股票/基金/指数/债券/商品/宏观/研报/财报/银行外汇），标「机构 / 个人」与订阅数 |
+| 投资知识库 | 5 个 ima 知识库，**直达链接**（不用先装 ima），按品类分，标个人/机构与订阅数 |
 | AI 知识库（侧栏底卡） | 整站打包成 Markdown：公开精选 / 进圈领完整版 / 下载 .md / 收藏 |
 | 投资工作台 | 敬请期待 |
 
@@ -101,5 +101,6 @@ GitHub Pages，主分支根目录：`https://lj22503.github.io/mangosource/`
 cd D:\claudework\mangosource
 git add -A; git commit -m "更新内容"; git push
 ```
+
 
 
