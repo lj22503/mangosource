@@ -269,6 +269,22 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
 .sk-src{font-size:10px;padding:1px 6px;border-radius:4px;line-height:1.6}
 .sk-src.org{background:#eef3e6;color:#4a6b2a}
 .sk-src.per{background:#f3efe7;color:#8a6a3a}
+/* 投资知识库：列表行 */
+.liblist{display:flex;flex-direction:column;margin-top:8px}
+.librow{display:flex;gap:16px;align-items:flex-start;padding:18px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;transition:.16s}
+.librow:hover{background:#fbfaf6}
+.librow:last-child{border-bottom:0}
+.libmark{flex:none;width:40px;height:40px;border-radius:10px;background:#efece4;color:#8a8577;display:grid;place-items:center;font-size:16px;font-weight:600;font-family:var(--serif)}
+.libmark.p{background:var(--accent-soft);color:var(--accent)}
+.libmain{flex:1;min-width:0}
+.libhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.libname{font-size:15px;font-weight:600;color:var(--ink)}
+.libtag{font-size:10.5px;color:var(--faint);border:1px solid var(--line2);border-radius:4px;padding:0 5px}
+.libdesc{margin-top:6px;font-size:13px;line-height:1.7;color:var(--soft)}
+.libmeta{margin-top:7px;display:flex;gap:8px;font-size:11.5px;color:var(--faint)}
+.libgo{flex:none;font-size:12.5px;color:var(--faint);padding-top:2px}
+.librow:hover .libgo{color:var(--accent)}
+@media(max-width:640px){.librow{gap:12px;padding:15px 2px}.libmark{width:32px;height:32px;font-size:14px;border-radius:8px}.libgo{display:none}}
 </style>
 <meta name="description" content="按「你遇到什么」分层的投资资源导航：场景、工具、大师、Skill、词典、提示词。不荐股、不预测，只给能直接用的资源与方法。"/><meta property="og:title" content="MangoSource · 投资资源地图"/><meta property="og:description" content="先看你遇到什么，再给你能直接用的资源与提示词。"/><meta property="og:type" content="website"/><meta property="og:image" content="https://lj22503.github.io/mangosource/assets/card-01-can-i-buy.png"/><meta name="twitter:card" content="summary_large_image"/></head>
 <body>
@@ -514,11 +530,11 @@ const MASTERS = [
   {name:"格雷厄姆",school:"价值派",line:"买的不是故事，是算得清的最坏情况与差价。",
    record:"格雷厄姆-纽曼基金 20 年年化约 20%；《证券分析》1934 年出版，是价值投资的原点。",
    points:["先算清算价值，再谈成长：最坏情况下值多少，才决定你敢不敢买","市场先生只是报价的人，他的情绪不是你的判断依据","分散买一篮子便宜货，比押中一只牛股更可靠"],
-   book:{t:"聪明的投资者",u:"https://weread.qq.com/web/reader/89c32460813aba25fg01310e"}},
+   book:{t:"证券分析",u:"https://weread.qq.com/web/reader/89c32460813aba25fg01310e"}},
   {name:"巴菲特",school:"价值派",line:"用合理的价格买好生意，然后坐着不动。",
    record:"伯克希尔 1965 年至今复合年化约 20%，近 60 年；前身是家纺织厂。",
    points:["能力圈：只投自己讲得清十年后还怎样的生意","把股票当公司的一部分，而不是屏幕上跳动的价格","别人贪婪时恐惧，别人恐惧时贪婪——说起来容易，做起来靠现金储备"],
-   book:{t:"巴菲特致股东的信",u:"https://weread.qq.com/web/search/books?keyword=%E5%B7%B4%E8%8F%B2%E7%89%B9%E8%87%B4%E8%82%A1%E4%B8%9C%E7%9A%84%E4%BF%A1"},
+   book:{t:"巴菲特致股东的信（原书第 4 版）",u:"https://weread.qq.com/web/reader/8cb322605e2c008cb4c4217"},
    off:{t:"伯克希尔历年股东信",u:"https://www.berkshirehathaway.com/letters/letters.html"}},
   {name:"芒格",school:"价值派",line:"反过来想，总是反过来想：先别输，再谈赢。",
    record:"与巴菲特搭档 45 年；Wesco 时期年化约 19%；《穷查理宝典》是他唯一的系统讲话集。",
@@ -532,15 +548,15 @@ const MASTERS = [
   {name:"邓普顿",school:"价值派",line:"在最悲观的角落买，在全球范围找便宜。",
    record:"邓普顿成长基金 1954–1992 年化约 14.5%，38 年；二战爆发时借钱买欧股。",
    points:["最悲观点是可以被观察的：悲观情绪最浓时，价格最可能低于价值","同一家公司，在不同市场可能有完全不同的价格","买入前先问：如果它五年不涨，我还愿意拿吗"],
-   book:{t:"邓普顿教你逆向投资",u:"https://weread.qq.com/web/reader/e243244071914632e24d1f1"}},
+   book:{t:"让钱流进来（中信投资经典合集）",u:"https://weread.qq.com/web/reader/dfb32500811e28523g012174"}},
   {name:"卡拉曼",school:"风险与不确定",line:"安全边际不是折扣，是先想清楚会亏多少。",
    record:"Baupost 1983 年至今年化约 15%，长期持有大量现金；《安全边际》已成绝版。",
    points:["风险不是波动，是本金的永久损失","绝对收益思维：不跟指数比，亏钱就是失败","没有好机会时，现金也是一种仓位"],
-   book:{t:"安全边际",u:"https://weread.qq.com/web/reader/e0d329c0813aba8dbg01448c"}},
+   book:{t:"现代价值投资的安全边际（斯万·卡林）",u:"https://weread.qq.com/web/reader/f4c324c071f8f0e7f4cb196"}},
   {name:"费雪",school:"成长派",line:"宁要十五个真正懂的，不要五十个听说过的。",
    record:"《怎样选择成长股》1958 年出版；持有摩托罗拉约 30 年，经历过它的全部周期。",
    points:["用「闲聊法」调研：问客户、供应商、离职员工，而不是只看财报","十五个要点逐条过，不达标就不买","真正的好公司极少，找到了就该重仓、长期拿"],
-   book:{t:"怎样选择成长股",u:"https://weread.qq.com/web/reader/a5b329a0597d80a5b5f680d"}},
+   book:{t:"怎样选择成长股（实战版）",u:"https://weread.qq.com/web/reader/d3c32fc0813abb30cg01458b"}},
   {name:"彼得·林奇",school:"成长派",line:"买你懂的生意，先看故事，再去数数字。",
    record:"麦哲伦基金 1977–1990 年化约 29%，13 年；期间看过上万家公司。",
    points:["把公司分成六类：缓慢增长、稳健、快速增长、周期、困境反转、资产富余","PEG：用增速给估值打折，比单看市盈率有用","普通人最大的优势，是能在生活里比机构更早发现好生意"],
@@ -552,11 +568,11 @@ const MASTERS = [
   {name:"达利欧",school:"宏观与周期",line:"先看清自己处在周期的哪一段，再谈配置。",
    record:"桥水 1975 年创办；全天候策略 1996 年落地，Pure Alpha 长期年化约 11–12%。",
    points:["把决策拆成可验证的原则，写下来，事后对照","痛苦 + 反思 = 进步：每次亏损都是规则的修订材料","分散不是买很多，是买互不相关的风险"],
-   book:null,off:{t:"原则 · 免费章节",u:"https://www.principles.com"}},
+   book:{t:"原则：专家解读手册",u:"https://weread.qq.com/web/reader/eee32c605e1bc3eee5c5ac4"},off:{t:"原则 · 免费章节",u:"https://www.principles.com"}},
   {name:"周金涛",school:"宏观与周期",line:"人生发财靠康波：你赚的不是能力，是周期给你的位置。",
    record:"中信建投前首席经济学家，2016 年「人生发财靠康波」演讲影响一代人；同年病逝，年仅 44 岁。",
    points:["先判断自己在周期的哪个阶段，再决定激进还是保守","商品、地产、股市的顶底有共振，别只看单一市场","周期给的是位置，不是时点：方向对了，早一年晚一年都能活"],
-   book:{t:"涛动周期论",u:"https://weread.qq.com/web/search/books?keyword=%E6%B6%9B%E5%8A%A8%E5%91%A8%E6%9C%9F%E8%AE%BA"}},
+   book:{t:"人生财富靠康波",u:"https://weread.qq.com/web/reader/b5e325b0813ab989eg01578a"}},
   {name:"博格",school:"指数与量化",line:"别找针，买下整个草堆：成本是唯一确定的事。",
    record:"1975 年创立先锋，1976 年推出第一只面向个人的指数基金；被称「指数基金之父」。",
    points:["投资回报 = 市场回报 − 成本，你能控制的只有成本","指数基金不是「平均」，是拿到市场该给你的那一份","不要择时：待在市场里的时间，比挑时机重要"],
@@ -577,7 +593,7 @@ const MASTERS = [
   {name:"塔勒布",school:"风险与不确定",line:"先活下来，再谈收益：尾部风险决定生死。",
    record:"《黑天鹅》《反脆弱》作者；Universa 的尾部对冲策略在 2020 年 3 月单月回报据报超 3600%。",
    points:["不要预测黑天鹅，要为它留出生存空间","杠铃策略：极度保守 + 极小仓位极度激进，中间地带最危险","用「会不会死」而不是「赚多少」来衡量一个仓位"],
-   book:{t:"随机漫步的傻瓜",u:"https://weread.qq.com/web/search/books?keyword=%E9%9A%8F%E6%9C%BA%E6%BC%AB%E6%AD%A5%E7%9A%84%E5%82%BB%E7%93%9C"},
+   book:{t:"随机漫步的傻瓜",u:"https://weread.qq.com/web/reader/7d9327605e10bf7d9560267"},
    off:{t:"作者官网 INCERTO",u:"https://www.fooledbyrandomness.com"}},
   {name:"李录",school:"中国实践",line:"价值投资在中国不是例外，是更需要耐心。",
    record:"喜马拉雅资本 1997 年创办，长期年化约 20%；芒格家族资产的管理人之一。",
@@ -590,7 +606,7 @@ const MASTERS = [
   {name:"段永平",school:"中国实践",line:"买公司就是买它未来现金流的折现，别的都是噪音。",
    record:"步步高、OPPO、vivo 创始人；长期持有网易、苹果、茅台，公开分享的判断被反复验证。",
    points:["先问「十年后这家公司还在不在、还赚不赚钱」","不懂不做：不投看不懂的行业，哪怕它在涨","停止做错的事，比努力做对的事更值钱"],
-   book:{t:"段永平投资问答录",u:"https://weread.qq.com/web/search/books?keyword=%E6%AE%B5%E6%B0%B8%E5%B9%B3%E6%8A%95%E8%B5%84%E9%97%AE%E7%AD%94%E5%BD%95"},
+   book:null,
    off:{t:"本人雪球主页",u:"https://www.xueqiu.com/u/1247347556"}},
   {name:"张坤",school:"中国实践",line:"长期持有能持续创造自由现金流的生意，别在意短期排名。",
    record:"易方达蓝筹精选等产品管理规模曾超千亿；连续多年在季报里写同一套逻辑，被称「最像巴菲特的中文季报」。",
@@ -1196,24 +1212,30 @@ function openLock(){
   $("#ov").classList.add("on"); document.body.style.overflow="hidden";
 }
 
-// [名称, 品类[], 来源, 一句, 订阅, 内容, 作者, 直达链接]
+// [名称, 品类[], 来源, 一句, 数据(订阅), 数据2(内容), 作者/出处, 直达链接]
 const LIB = [
   ["股票投资助手Pro",["股票","宏观"],"个人","行情 + 券商研报 + 财报结构 + 产业链 + 估值模型，还带宏观利率与资金流。",
-   "653","2.4 万","资源采集助手","https://ima.qq.com/wiki/?shareId=cc1838e1387de46d91230186649deb8ed62304c8daae0596542b55257f970343"],
-  ["股票量化因子 · AI 决策引擎",["量化","因子"],"个人","2200+ 维因子池，开源股票系统 myhhub/stock 的官方配套知识库。",
-   "5,407","5,269","myhhub/stock","https://ima.qq.com/wiki/?shareId=8b0da768c77bc863f1cad8eb9482e37a6eeb26ad7171523b687d48c1a67c8e2c"],
+   "653 订阅","2.4 万条","资源采集助手 · ima","https://ima.qq.com/wiki/?shareId=cc1838e1387de46d91230186649deb8ed62304c8daae0596542b55257f970343"],
+  ["股票量化因子 · AI 决策引擎",["量化","因子"],"个人","2200+ 维因子池，开源股票系统 myhhub/stock 的配套库，因子怎么算都在这。",
+   "5,407 订阅","5,269 条","myhhub/stock · ima","https://ima.qq.com/wiki/?shareId=8b0da768c77bc863f1cad8eb9482e37a6eeb26ad7171523b687d48c1a67c8e2c"],
   ["投资经典著作",["书"],"个人","《穷查理宝典》《投资最重要的事》《怎样选择成长股》等 25 本原书 PDF，问它比翻书快。",
-   "1,153","25","forcode奇想录","https://ima.qq.com/wiki/?shareId=6e953bbfa8096a1ac97b2514ae915de2f5f603943c3eecdd65af0a484db771f7"],
-  ["兜兜爸投资知识库",["财报"],"个人","明星股年报 PDF 合集：腾讯、美的、招行、中信、比亚迪、药明康德、恒瑞。",
-   "103","49","JZhou","https://ima.qq.com/wiki/?shareId=b1bb7ac6b0899277e1908000a69888edb97cb7c79b7733acc5c3dedcbfba490b"],
-  ["聚宽回测助手",["回测"],"个人","写聚宽回测代码时查 API 用，因子、股票、场外基金、宏观、期权、指数、债券数据都有。",
-   "14","15","码上生财","https://ima.qq.com/wiki/?shareId=c948fc88cdf564ede724739850b95aba6257f3160fed42b9503f1124b58c03e4"],
+   "1,153 订阅","25 本","forcode奇想录 · ima","https://ima.qq.com/wiki/?shareId=6e953bbfa8096a1ac97b2514ae915de2f5f603943c3eecdd65af0a484db771f7"],
+  ["兜兜爸投资知识库",["财报"],"个人","明星股年报 PDF：腾讯、美的、招行、中信、比亚迪、药明康德、恒瑞。",
+   "103 订阅","49 份","JZhou · ima","https://ima.qq.com/wiki/?shareId=b1bb7ac6b0899277e1908000a69888edb97cb7c79b7733acc5c3dedcbfba490b"],
+  ["聚宽回测助手",["回测"],"个人","写聚宽回测代码时查 API：因子、股票、场外基金、宏观、期权、指数、债券数据。",
+   "14 订阅","15 条","码上生财 · ima","https://ima.qq.com/wiki/?shareId=c948fc88cdf564ede724739850b95aba6257f3160fed42b9503f1124b58c03e4"],
+  ["微信读书 · 投资经典",["书","股票","基金"],"平台","大师们的书基本都能在这读；上面 19 位大师，14 本已直接链到具体书页。",
+   "20 万+ 本","全站","微信读书","https://weread.qq.com"],
+  ["集思录",["债券","基金"],"社区","可转债、REITs、打新、套利的老玩家都在这，数据与话题一起看。",
+   "十余年","全站","集思录","https://www.jisilu.cn"],
+  ["MBA 智库 · 投资百科",["书"],"百科","查概念用它：一个名词一页，比翻文章快，适合先搭框架。",
+   "全站","全站","MBA 智库","https://wiki.mbalib.com"],
 ];
-const LIB_CATS = ["全部","股票","量化","书","财报","回测","宏观"];
+const LIB_CATS = ["全部","股票","基金","债券","量化","书","财报","回测","宏观"];
 let libCat="全部";
 function libView(){
   $("#h1").textContent="投资知识库";
-  $("#sub").textContent="点开就能直接看，不用先装 ima。";
+  $("#sub").textContent="别人已经整理好的资料库。点开直接看，不用先注册。";
   var body=$("#body"); body.innerHTML="";
   var tabs=el("div","tabs");
   LIB_CATS.forEach(function(c){
@@ -1223,26 +1245,35 @@ function libView(){
     tabs.appendChild(b);
   });
   body.appendChild(tabs);
-  var grid=el("div","skgrid");
+  var list=el("div","liblist");
   LIB.filter(function(x){return libCat==="全部"||x[1].indexOf(libCat)>-1;}).forEach(function(x){
-    var card=el("div","skcard");
-    var top=el("div","sk-top");
-    top.appendChild(el("span","sk-cat",x[1][0]));
-    top.appendChild(el("span","sk-src "+(x[2]==="机构"?"org":"per"),x[2]));
-    card.appendChild(top);
-    card.appendChild(el("div","sk-name",x[0]));
-    card.appendChild(el("div","sk-blurb",x[3]));
-    card.appendChild(el("div","sk-foot","★ "+x[4]+" 订阅　·　"+x[5]+" 个内容　·　@"+x[6]));
-    var a=el("a","sk-copy","打开知识库 ↗");
+    var a=el("a","librow");
     a.href=x[7]; a.target="_blank"; a.rel="noopener";
     a.setAttribute("data-track","kb_open"); a.setAttribute("data-track-sub",x[0]);
-    a.style.textDecoration="none"; a.style.textAlign="center";
-    card.appendChild(a);
-    grid.appendChild(card);
+    var mark=el("div","libmark"+(x[2]==="个人"?" p":""));
+    mark.textContent=x[0].charAt(0);
+    a.appendChild(mark);
+    var main=el("div","libmain");
+    var h=el("div","libhead");
+    h.appendChild(el("span","libname",x[0]));
+    h.appendChild(el("span","sk-src "+(x[2]==="个人"?"per":"org"),x[2]));
+    x[1].forEach(function(c){ h.appendChild(el("span","libtag",c)); });
+    main.appendChild(h);
+    main.appendChild(el("div","libdesc",x[3]));
+    var meta=el("div","libmeta");
+    meta.appendChild(el("span",null,x[4]));
+    meta.appendChild(el("span",null,"·"));
+    meta.appendChild(el("span",null,x[5]));
+    meta.appendChild(el("span",null,"·"));
+    meta.appendChild(el("span",null,x[6]));
+    main.appendChild(meta);
+    a.appendChild(main);
+    a.appendChild(el("div","libgo","打开 ↗"));
+    list.appendChild(a);
   });
-  body.appendChild(grid);
+  body.appendChild(list);
   var p=el("div","kbnuse");
-  p.innerHTML='<b>选的标准</b><div>① 点开直接能看，不用先订阅、不用跳去 ima<br/>② 内容是原书、原研报、原年报，不是二手解读<br/>③ 有人在维护（订阅数与内容数取自 2026-11-25）<br/>④ 宁少不多：现在 5 个，每个都能马上用</div>';
+  p.innerHTML='<b>选的标准</b><div>① 点开直接能看：不注册、不跳平台<br/>② 内容是原书、原研报、原年报，不是二手解读<br/>③ 有人维护（数字取自 2026-11-25）<br/>④ 宁少不多：8 个，个个能马上用</div>';
   body.appendChild(p);
 }
 
@@ -1431,6 +1462,8 @@ paint();
 </script>
 </body>
 </html>
+
+
 
 
 
