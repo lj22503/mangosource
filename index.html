@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
@@ -240,6 +240,15 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
 .sk-copy:hover{border-color:var(--accent);color:var(--accent)}
 .kbnuse{margin-top:26px;padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:12.5px;line-height:1.9;color:var(--soft)}
 .kbnuse b{display:block;font-size:12px;color:var(--ink);margin-bottom:6px}
+/* 付费墙：锁 */
+.peek{position:relative;opacity:.55;max-height:76px;overflow:hidden}
+.peek:after{content:"";position:absolute;left:0;right:0;bottom:0;height:44px;background:linear-gradient(180deg,rgba(244,242,236,0),#f4f2ec)}
+.lockbox{margin-top:10px;padding:16px 16px 14px;border-radius:12px;background:#f6f3ec;border:1px solid #e7e2d6}
+.lock-t{font-size:13.5px;font-weight:600;color:#3f3d38}
+.lock-d{font-size:12.5px;color:#7a776d;margin-top:6px;line-height:1.6}
+.lock-btn{display:inline-block;margin-top:12px;background:#1b1a17;color:#fcfcf8;font-size:13px;padding:9px 18px;border-radius:999px;text-decoration:none}
+.lock-btn:hover{opacity:.88}
+.lock-n{font-size:11.5px;color:#9a978c;margin-top:10px}
 </style>
 <meta name="description" content="按「你遇到什么」分层的投资资源导航：场景、工具、大师、Skill、词典、提示词。不荐股、不预测，只给能直接用的资源与方法。"/><meta property="og:title" content="MangoSource · 投资资源地图"/><meta property="og:description" content="先看你遇到什么，再给你能直接用的资源与提示词。"/><meta property="og:type" content="website"/><meta property="og:image" content="https://lj22503.github.io/mangosource/assets/card-01-can-i-buy.png"/><meta name="twitter:card" content="summary_large_image"/></head>
 <body>
@@ -838,7 +847,7 @@ function promptView(){
     c.appendChild(top);
     c.appendChild(el("div","sk-name",p[2]));
     c.appendChild(el("div","sk-blurb",p[3]));
-    c.appendChild(el("div","sk-foot",p[1].replace("你会在这句话上用到：","用在这句话：")));
+    c.appendChild(el("div","sk-foot",p[1].replace("你会在这句话上用到：","用在这句话：")+"　🔒 全文在星球"));
     grid.appendChild(c);
   });
   body.appendChild(grid);
@@ -1010,6 +1019,15 @@ function openMaster(m){
 }
 
 // ---------- 复制与知识库 ----------
+const ZSXQ = "https://wx.zsxq.com/group/15554842555282";
+function lockHTML(what, desc){
+  return '<div class="lockbox">'+
+    '<div class="lock-t">🔒 '+what+'在星球里</div>'+
+    '<div class="lock-d">'+(desc||"加入「燃冰的投资平权」解锁")+'</div>'+
+    '<a class="lock-btn" href="'+ZSXQ+'" target="_blank" rel="noopener" data-track="lock_join" data-track-sub="'+what+'">加入星球解锁 ↗</a>'+
+    '<div class="lock-n">看完这两步，第三步才是关键——所以它放在里面。</div>'+
+  '</div>';
+}
 function copyText(text,btn,label){
   function fb(t,cb){
     var ta=document.createElement("textarea"); ta.value=t;
@@ -1042,7 +1060,7 @@ function kbMarkdown(full){
     if(s.why&&s.why.length){ s.why.forEach(function(w){ L.push("- 卡点："+w); }); }
     if(s.s1) L.push("- 第一步｜"+s.s1.d+"（"+s.s1.u+"）");
     if(s.s2) L.push("- 第二步｜"+s.s2.d+"（"+s.s2.u+"）");
-    if(s.s3){ L.push("- 第三步｜"+s.s3.d); L.push("  提示词："); L.push("  ```"); s.s3.p.split("\n").forEach(function(x){ L.push("  "+x); }); L.push("  ```"); }
+    if(s.s3){ L.push("- 第三步｜"+s.s3.d+"（提示词全文在星球内提供）"); }
     if(s.end) L.push("- 现在就做："+s.end);
   });
   L.push("");
@@ -1086,10 +1104,7 @@ function kbMarkdown(full){
     L.push("### "+p[2]+"（"+p[0]+"）");
     L.push("- 作用："+p[3]);
     L.push("- 用在："+p[1]);
-    L.push("- 全文：");
-    L.push("```");
-    p[4].split("\n").forEach(function(x){ L.push(x); });
-    L.push("```");
+    L.push("- 全文：（星球内提供，可复制）");
     L.push("- 它会给你："+p[5]);
   });
   L.push("");
@@ -1122,18 +1137,28 @@ function kbView(){
     c.appendChild(b);
     grid.appendChild(c);
   }
-  card("整站","复制全部内容给 AI","21 个场景 + 44 个工具 + 19 位大师 + 52 个 Skill + 词典 + 6 条提示词，一次带走。",
-    "复制 Markdown",function(){ copyText(kbMarkdown(true),this,"复制 Markdown"); trackEvent("kb_copy_full"); });
-  card("精选","只复制精选集","每层取前几条，约 5 分钟读完，适合发群或存备忘录。",
+  card("完整版","完整知识库（含全部提示词）","21 个场景的完整三步 + 6 条提示词全文 + 每月新增，打包成一个 md。",
+    "🔒 进圈解锁",function(){ openLock(); });
+  card("精选","复制公开精选集","资源索引 + 场景判断 + 第一步，约 5 分钟读完，适合发群或存备忘录。",
     "复制精选集",function(){ copyText(kbMarkdown(false),this,"复制精选集"); trackEvent("kb_copy_brief"); });
-  card("下载","下载成 .md 文件","存进 Obsidian / Notion / 你的知识库，随时检索。",
-    "下载 knowledge.md",function(){ kbDownload(); });
+  card("更新","每月更新清单","每月新增的场景、失效链接替换、新的 Skill，只在星球里发。",
+    "🔒 进圈看更新",function(){ openLock(); });
   card("收藏","把这个站收起来","桌面按 Ctrl/⌘ + D；手机浏览器「添加到主屏幕」，下次点开就是 App 的样子。",
     "看怎么收藏",function(){ $("#panel").innerHTML='<button class="x" onclick="closePanel()">✕</button><h2>怎么收藏</h2><div class="sec"><h5>电脑</h5><div class="kv">Ctrl + D（Mac 是 ⌘ + D），存到书签栏。</div></div><div class="sec"><h5>手机</h5><div class="kv">Safari：底部分享按钮 → 添加到主屏幕。<br/>安卓 Chrome：右上角 ⋮ → 添加到主屏幕。<br/>加完就是一个图标，点开即用，不用再找链接。</div></div>'; $("#ov").classList.add("on"); document.body.style.overflow="hidden"; });
   body.appendChild(grid);
   var p=el("div","kbnuse");
-  p.innerHTML='<b>怎么用它</b><div>① 复制整站 → 贴给 AI，让它当你私人的投资资料库；<br/>② 只复制精选 → 发群、存备忘录、做成内容集；<br/>③ 下载 .md → 进你自己的知识库，和别的资料一起检索。</div><div style="margin-top:10px">也可以直接打开纯文本版：<a href="knowledge.md" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">knowledge.md ↗</a>　给 AI 抓取的索引：<a href="llms.txt" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">llms.txt ↗</a></div>';
+  p.innerHTML='<b>怎么用它</b><div>① 公开精选 → 发群、存备忘录、做成内容集，随便转；<br/>② 完整版 → 星球专属，含全部提示词与每月新增；<br/>③ 下载 .md → 进你自己的知识库（公开版）。</div><div style="margin-top:10px">纯文本版：<a href="knowledge.md" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">knowledge.md ↗</a>　给 AI 抓取的索引：<a href="llms.txt" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">llms.txt ↗</a></div>';
   body.appendChild(p);
+}
+function openLock(){
+  trackEvent("lock_open");
+  $("#panel").innerHTML='<button class="x" onclick="closePanel()">✕</button>'+
+    '<h2>完整版在星球里</h2>'+
+    '<div class="v">你在别处看不到的部分，都在这里。</div>'+
+    '<div class="sec"><h5>解锁什么</h5><div class="kv">· 21 个场景的第三步提示词全文<br/>· 6 条提示词完整版（可复制）<br/>· 每月新增的场景与失效链接替换<br/>· 完整知识库 .md 下载</div></div>'+
+    '<div class="sec"><h5>怎么进</h5><div class="kv">扫码或点下面按钮，加入「燃冰的投资平权」，进群后群公告里领完整包。</div></div>'+
+    '<a class="lock-btn" style="margin-top:6px" href="'+ZSXQ+'" target="_blank" rel="noopener" data-track="lock_join" data-track-sub="kb_full">加入星球解锁 ↗</a>';
+  $("#ov").classList.add("on"); document.body.style.overflow="hidden";
 }
 
 function paint(){
@@ -1157,7 +1182,9 @@ function openScene(s){
   if(s.s1) st.push(step("01","先查清楚","<div class=\"sd\">"+s.s1.d+"</div><div class=\"su\">"+s.s1.u+"</div>"));
   if(s.s2) st.push(step("02","再做个判断","<div class=\"sd\">"+s.s2.d+"</div><div class=\"su\">"+s.s2.u+"</div>"));
   if(s.s3) st.push(step("03","最后让 AI 帮你算",
-    '<div class="sd">'+s.s3.d+'</div><div class="sp"><button class="copybtn" onclick="copyScene(this)">复制这段</button><pre class="ptext">'+s.s3.p.replace(/</g,"&lt;")+'</pre></div>'));
+    '<div class="sd">'+s.s3.d+'</div>'+
+    '<pre class="ptext peek">'+s.s3.p.split("\n").slice(0,2).join("\n").replace(/</g,"&lt;")+'</pre>'+
+    lockHTML("这条提示词的完整版","解锁完整提示词 + 每月新增的场景")));
   $("#panel").innerHTML='<button class="x" onclick="closePanel()">✕</button>'+
     '<div style="font-size:11.5px;color:var(--faint)">'+s.tags.join(" / ")+'</div>'+
     '<h2>'+s.t+'</h2>'+
@@ -1181,18 +1208,12 @@ function openPrompt(p){
     '<h2>'+p[2]+'</h2>'+
     '<div class="v">'+p[3]+'</div>'+
     '<div class="sec"><h5>什么时候用</h5><div class="kv">'+p[1]+'</div></div>'+
-    '<div class="sec"><h5>全文（复制后粘贴给你在用的 AI）</h5>'+
-      '<button class="copybtn" id="copybtn">复制这段</button>'+
-      '<pre class="prompt" id="ptext">'+plain.replace(/</g,"&lt;")+'</pre>'+
+    '<div class="sec"><h5>提示词全文</h5>'+
+      '<pre class="ptext peek">'+plain.split("\n").slice(0,2).join("\n").replace(/</g,"&lt;")+'</pre>'+
+      lockHTML("这条提示词的完整版","解锁 6 条提示词全文 + 每月新增")+
     '</div>'+
     '<div class="sec"><h5>它会给你什么</h5><div class="kv">'+p[5]+'</div></div>';
   $("#ov").classList.add("on"); document.body.style.overflow="hidden";
-  const btn=$("#copybtn");
-  btn.onclick=async()=>{
-    try{ await navigator.clipboard.writeText(plain); btn.textContent="已复制 ✓"; trackEvent("copy_prompt",{sub:p[2]}); }
-    catch(e){ const t=document.createElement("textarea"); t.value=plain; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); btn.textContent="已复制 ✓"; }
-    setTimeout(()=>{btn.textContent="复制这段"},1800);
-  };
 }
 function openBook(name){
   const b = BOOKS[name];
@@ -1265,6 +1286,9 @@ paint();
 </script>
 </body>
 </html>
+
+
+
 
 
 
