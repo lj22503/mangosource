@@ -256,6 +256,15 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
 .s-act.on{background:var(--ink);color:#fcfcf8;border-color:var(--ink)}
 .s-promo-link{display:block;margin-top:12px;font-size:12px;color:var(--faint);text-decoration:none;text-align:center}
 .s-promo-link:hover{color:var(--accent)}
+/* 侧栏底卡：滑动轮播 */
+.s-slider{overflow:hidden;padding:20px 0 14px}
+.s-track{display:flex;transition:transform .5s cubic-bezier(.32,.72,0,1);will-change:transform}
+.s-slide{min-width:100%;padding:0 20px;box-sizing:border-box}
+.s-dots{display:flex;gap:5px;justify-content:center;margin-top:12px}
+.s-dot{width:5px;height:5px;border-radius:999px;background:var(--line2);border:0;padding:0;cursor:pointer;transition:.2s}
+.s-dot.on{width:16px;background:var(--accent)}
+.s-act-solid{background:var(--ink);color:#fcfcf8;border-color:var(--ink)}
+.s-act-solid:hover{background:var(--ink);color:#fcfcf8;opacity:.9}
 </style>
 <meta name="description" content="按「你遇到什么」分层的投资资源导航：场景、工具、大师、Skill、词典、提示词。不荐股、不预测，只给能直接用的资源与方法。"/><meta property="og:title" content="MangoSource · 投资资源地图"/><meta property="og:description" content="先看你遇到什么，再给你能直接用的资源与提示词。"/><meta property="og:type" content="website"/><meta property="og:image" content="https://lj22503.github.io/mangosource/assets/card-01-can-i-buy.png"/><meta name="twitter:card" content="summary_large_image"/></head>
 <body>
@@ -282,14 +291,32 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
       <span class="soon" data-tip="敬请期待">投资工作台</span>
     </nav>
     <div class="s-meta">
-      <div class="s-promo">
-        <div class="s-promo-name">带走这个站</div>
-        <div class="s-promo-desc">收藏随时回来看，或者打包成 AI 知识库。</div>
-        <div class="s-promo-acts">
-          <button class="s-act" id="actFav" data-track="bookmark">☆ 收藏本站</button>
-          <button class="s-act" data-track="kb_open" onclick="view='kb';paint();">AI 知识库</button>
+      <div class="s-promo s-slider" id="promo">
+        <div class="s-track" id="promoTrack">
+          <div class="s-slide">
+            <div class="s-promo-name">带走这个站</div>
+            <div class="s-promo-desc">收藏随时回来看，也可以打包成 AI 知识库。</div>
+            <div class="s-promo-acts">
+              <button class="s-act" id="actFav" data-track="bookmark">☆ 收藏本站</button>
+              <button class="s-act" data-track="kb_open" onclick="view='kb';paint();">AI 知识库</button>
+            </div>
+          </div>
+          <div class="s-slide">
+            <div class="s-promo-name">投资知识库</div>
+            <div class="s-promo-desc">6 个已经整理好的 ima 知识库，订阅就能问。</div>
+            <div class="s-promo-acts">
+              <button class="s-act" data-track="lib_open" onclick="view='lib';paint();">去看清单</button>
+            </div>
+          </div>
+          <div class="s-slide">
+            <div class="s-promo-name">燃冰的投资平权</div>
+            <div class="s-promo-desc">完整提示词与每月更新，都在圈子里。</div>
+            <div class="s-promo-acts">
+              <a class="s-act s-act-solid" data-track="join_circle" href="https://wx.zsxq.com/group/15554842555282" target="_blank" rel="noopener" style="display:grid;place-items:center;text-decoration:none">加入圈子 ↗</a>
+            </div>
+          </div>
         </div>
-        <a class="s-promo-link" data-track="join_circle" href="https://wx.zsxq.com/group/15554842555282" target="_blank" rel="noopener">加入「燃冰的投资平权」↗</a>
+        <div class="s-dots" id="promoDots"></div>
       </div>
     </div>
   </aside>
@@ -1354,6 +1381,41 @@ trackEvent("page_view", { view: view });
   });
   sync();
 })();
+// 侧栏底卡轮播：自动播 + 可滑动 + 原点切换
+(function(){
+  var root=document.getElementById("promo");
+  if(!root) return;
+  var track=document.getElementById("promoTrack");
+  var dotsBox=document.getElementById("promoDots");
+  var n=track.children.length, i=0, timer=null;
+
+  for(var k=0;k<n;k++){
+    var d=document.createElement("button");
+    d.className="s-dot"+(k===0?" on":"");
+    d.setAttribute("aria-label","第"+(k+1)+"张");
+    (function(idx){ d.addEventListener("click",function(){ go(idx); rest(); }); })(k);
+    dotsBox.appendChild(d);
+  }
+  function go(idx){
+    i=(idx+n)%n;
+    track.style.transform="translateX(-"+(i*100)+"%)";
+    [].forEach.call(dotsBox.children,function(el,ix){ el.classList.toggle("on",ix===i); });
+  }
+  function play(){ timer=setInterval(function(){ go(i+1); },5200); }
+  function rest(){ clearInterval(timer); play(); }
+  play();
+  root.addEventListener("mouseenter",function(){ clearInterval(timer); });
+  root.addEventListener("mouseleave",play);
+
+  var x0=null;
+  root.addEventListener("touchstart",function(e){ x0=e.touches[0].clientX; clearInterval(timer); },{passive:true});
+  root.addEventListener("touchend",function(e){
+    if(x0===null) return;
+    var dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>34){ go(dx<0?i+1:i-1); }
+    x0=null; play();
+  },{passive:true});
+})();
 $("#logo").addEventListener("click",e=>{e.preventDefault();view="scene";paint();});
 document.querySelectorAll("#nav .soon").forEach(function(s){
   s.addEventListener("click",function(){
@@ -1368,6 +1430,7 @@ paint();
 </script>
 </body>
 </html>
+
 
 
 
