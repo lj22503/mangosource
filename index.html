@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
@@ -1254,7 +1254,6 @@ const LIB = [
   ["有知有行 · 资料库",["方法","基金"],"机构","投资第一课、四笔钱、定投、财务盘点——普通人建框架最省力的一条路。",
    "全站","免费","有知有行","https://youzhiyouxing.cn/materials"],
 ];
-const LIB_SEARCH = [];
 const LIB_CATS = ["全部","指数","个股","基金","宏观","方法"];
 let libCat="全部";
 function libRow(x, direct){
@@ -1286,7 +1285,7 @@ function libRow(x, direct){
 }
 function libView(){
   $("#h1").textContent="投资知识库";
-  $("#sub").textContent="按维度整理。能直达的点开就看，不能的复制库名去 ima 搜。";
+  $("#sub").textContent="按维度整理，点开就是原库。";
   var body=$("#body"); body.innerHTML="";
   var tabs=el("div","tabs");
   LIB_CATS.forEach(function(c){
@@ -1299,16 +1298,6 @@ function libView(){
   var list=el("div","liblist");
   LIB.filter(function(x){return libCat==="全部"||x[1].indexOf(libCat)>-1;}).forEach(function(x){ list.appendChild(libRow(x,true)); });
   body.appendChild(list);
-  var rest=LIB_SEARCH.filter(function(x){return libCat==="全部"||x[1].indexOf(libCat)>-1;});
-  if(rest.length){
-    body.appendChild(el("div","grp","没有分享链接 · 复制库名去 ima 搜"));
-    var l2=el("div","liblist");
-    rest.forEach(function(x){ l2.appendChild(libRow(x,false)); });
-    body.appendChild(l2);
-  }
-  var p=el("div","kbnuse");
-  p.innerHTML='<b>为什么分两段</b><div>ima 的直达链接（shareId）只有库主能生成。上面 7 个有，点开就是；下面 9 个没有，只能复制库名去「发现 → 知识库广场」搜，第一条就是它。订阅数取自 2026-11-25。</div>';
-  body.appendChild(p);
 }
 
 function paint(){
@@ -1496,6 +1485,8 @@ paint();
 </script>
 </body>
 </html>
+
+
 
 
 
