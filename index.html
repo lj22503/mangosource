@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
@@ -265,6 +265,10 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
 .s-dot.on{width:16px;background:var(--accent)}
 .s-act-solid{background:var(--ink);color:#fcfcf8;border-color:var(--ink)}
 .s-act-solid:hover{background:var(--ink);color:#fcfcf8;opacity:.9}
+/* 知识库：来源标签 */
+.sk-src{font-size:10px;padding:1px 6px;border-radius:4px;line-height:1.6}
+.sk-src.org{background:#eef3e6;color:#4a6b2a}
+.sk-src.per{background:#f3efe7;color:#8a6a3a}
 </style>
 <meta name="description" content="按「你遇到什么」分层的投资资源导航：场景、工具、大师、Skill、词典、提示词。不荐股、不预测，只给能直接用的资源与方法。"/><meta property="og:title" content="MangoSource · 投资资源地图"/><meta property="og:description" content="先看你遇到什么，再给你能直接用的资源与提示词。"/><meta property="og:type" content="website"/><meta property="og:image" content="https://lj22503.github.io/mangosource/assets/card-01-can-i-buy.png"/><meta name="twitter:card" content="summary_large_image"/></head>
 <body>
@@ -1193,22 +1197,35 @@ function openLock(){
 }
 
 // ---------- 投资知识库（ima 精选） ----------
+// [名称, 品类[], 来源, 一句, ima 搜索词, 订阅数]
 const LIB = [
-  ["机构官方","华夏基金","基金经理观点、产业研究、投教内容与重磅报告，已收录 120+ 篇。","华夏基金"],
-  ["机构官方","易方达基金","首家入驻的公募：5 大基金研选 Skill × 3 个知识库专区。","易方达基金"],
-  ["研报与资讯","华尔街见闻","两个知识库 + 一个 Skill，把财经研究带进 ima。","华尔街见闻"],
-  ["研报与资讯","最全研报知识库","腾讯财经与 ima 合建：2020 年以来超百家券商与智库的深度研报。","最全研报知识库"],
-  ["个人沉淀","四念的知识库","一个人整理的投资知识库 + 年报知识库，收录 50+ 本投资书。","四念"],
-  ["个人沉淀","微积分量化价投","多年基金研究的沉淀，接入 ima 后可以按问题检索。","微积分量化价投"],
+  ["易方达基金",["指数","基金"],"机构","首家入驻的公募知识号：ETF 与场外指数查询 Skill + 3 个知识库专区。","易方达基金",""],
+  ["华夏基金",["基金","股票"],"机构","基金经理观点、产业研究、投教内容与重磅报告，120+ 篇。","华夏基金",""],
+  ["广发基金",["基金"],"机构","基金公司官方知识号，产品与投研观点可直接问答。","广发基金",""],
+  ["广发证券",["股票","研报"],"机构","券商研究能力接入：行业深度、公司覆盖、策略观点。","广发证券",""],
+  ["东方财富妙想",["股票"],"机构","行情与个股问答，适合问「这只最近怎么了」。","东方财富妙想",""],
+  ["华尔街见闻",["宏观","债券","商品"],"机构","两个知识库 + 一个 Skill：宏观、债券、外汇、商品、产业五个角度一起看。","华尔街见闻",""],
+  ["最全研报知识库",["研报","宏观"],"机构","腾讯财经与 ima 合建：2020 年以来超百家券商与智库的深度研报。","最全研报知识库",""],
+  ["【深度】股票研究",["股票"],"个人","调研纪要 + 业绩公告 + 卖方预测，10 万+ 内容，适合做个股功课。","深度 股票研究","7290"],
+  ["各行业研究报告",["研报"],"个人","按行业收着的报告库，找某个赛道现状先用它。","各行业研究报告","3862"],
+  ["国内研报内参",["研报"],"个人","16 大赛道 2200+ 份报告，日更白皮书与趋势洞察。","国内研报内参","3189"],
+  ["企业财报分析与投融资估值指南",["财报"],"个人","财报口径与估值方法，308 个内容，适合拆一家公司的账。","企业财报分析","2449"],
+  ["全球宏观与大类资产配置",["宏观","债券"],"个人","全球宏观 + 大类资产配置 + 家族财富管理，777 个内容。","全球宏观分析","1775"],
+  ["终极股息投资笔记",["股票","债券"],"个人","翻译《终极股息投资》并同步复利笔记，红利策略的底子在这。","终极股息投资","1371"],
+  ["最全银行资源库",["银行外汇"],"个人","监管动态、头部银行实践、金融科技方案，1881 个内容。","最全银行资源库","1286"],
+  ["外汇业务知识库",["银行外汇","商品"],"个人","按外汇局政策框架搭的法规库，查合规口径最快。","外汇业务知识库","999"],
+  ["四念的投研知识库",["财报","股票"],"个人","一个人整理的投研库 + 年报库，收录 50+ 本投资书。","四念",""],
+  ["微积分量化价投",["基金"],"个人","多年基金研究的沉淀，接入 ima 后可按问题检索。","微积分量化价投",""],
+  ["MangoSource 知识库",["股票","基金","指数","宏观"],"个人","本站自己的知识库：场景 + 工具 + 大师 + 提示词，可下载成 md。","",""],
 ];
+const LIB_CATS = ["全部","股票","基金","指数","债券","商品","宏观","研报","财报","银行外汇"];
 let libCat="全部";
 function libView(){
   $("#h1").textContent="投资知识库";
-  $("#sub").textContent="这些是别人已经整理好的 AI 知识库，在 ima 里订阅就能问。";
+  $("#sub").textContent="按品类整理的 AI 知识库，在 ima 里订阅就能直接问。";
   var body=$("#body"); body.innerHTML="";
-  var cats=["全部"].concat(LIB.map(function(x){return x[0];}).filter(function(v,i,a){return a.indexOf(v)===i;}));
   var tabs=el("div","tabs");
-  cats.forEach(function(c){
+  LIB_CATS.forEach(function(c){
     var b=el("button",null,c);
     b.setAttribute("aria-pressed",c===libCat);
     b.onclick=function(){ libCat=c; libView(); };
@@ -1216,25 +1233,26 @@ function libView(){
   });
   body.appendChild(tabs);
   var grid=el("div","skgrid");
-  LIB.filter(function(x){return libCat==="全部"||x[0]===libCat;}).forEach(function(x){
+  LIB.filter(function(x){return libCat==="全部"||x[1].indexOf(libCat)>-1;}).forEach(function(x){
     var card=el("div","skcard");
     var top=el("div","sk-top");
-    top.appendChild(el("span","sk-cat",x[0]));
-    top.appendChild(el("span","sk-arr","↗"));
+    top.appendChild(el("span","sk-cat",x[1][0]));
+    top.appendChild(el("span","sk-src "+(x[2]==="机构"?"org":"per"),x[2]));
     card.appendChild(top);
-    card.appendChild(el("div","sk-name",x[1]));
-    card.appendChild(el("div","sk-blurb",x[2]));
-    card.appendChild(el("div","sk-foot","在 ima 里搜「"+x[3]+"」即可订阅"));
-    var a=el("a","sk-copy","打开 ima ↗");
-    a.href="https://ima.qq.com"; a.target="_blank"; a.rel="noopener";
-    a.setAttribute("data-track","ima_open"); a.setAttribute("data-track-sub",x[1]);
+    card.appendChild(el("div","sk-name",x[0]));
+    card.appendChild(el("div","sk-blurb",x[3]));
+    var foot=x[5]?("★ "+x[5]+" 人订阅　·　在 ima 里搜「"+x[4]+"」"):(x[4]?("在 ima 里搜「"+x[4]+"」即可订阅"):"本站内容，下方 AI 知识库可下载");
+    card.appendChild(el("div","sk-foot",foot));
+    var a=el("a","sk-copy",x[4]?"打开 ima ↗":"下载 md");
+    a.href=x[4]?"https://ima.qq.com":"knowledge.md"; a.target="_blank"; a.rel="noopener";
+    a.setAttribute("data-track","ima_open"); a.setAttribute("data-track-sub",x[0]);
     a.style.textDecoration="none"; a.style.textAlign="center";
     card.appendChild(a);
     grid.appendChild(card);
   });
   body.appendChild(grid);
   var p=el("div","kbnuse");
-  p.innerHTML='<b>怎么用</b><div>① 手机装 ima（或微信搜「ima 知识库」小程序）<br/>② 打开「发现」→ 知识库广场<br/>③ 搜上面的名字，点订阅<br/>④ 订阅后就能像聊天一样问它，答案只从这份知识库里找</div><div style="margin-top:10px">想自己建一个？<a href="https://ima.qq.com" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">ima 官网 ↗</a></div>';
+  p.innerHTML='<b>怎么用</b><div>① 手机装 ima（或微信搜「ima 知识库」小程序）<br/>② 打开「发现」→ 知识库广场<br/>③ 按下面的名字搜索，点订阅<br/>④ 订阅后就能像聊天一样问它，答案只从这份知识库里找</div><div style="margin-top:10px">订阅数取自 ima 知识库广场（2026-11-25）· 想自己建一个？<a href="https://ima.qq.com" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">ima 官网 ↗</a></div>';
   body.appendChild(p);
 }
 
@@ -1423,6 +1441,7 @@ paint();
 </script>
 </body>
 </html>
+
 
 
 
