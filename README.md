@@ -12,7 +12,7 @@
 | 投资提示词 | 6 条「say to AI」提示词，按你会问的那句话分 tab，可一键复制 |
 | 投资知识库 | 5 个 ima 知识库，**直达链接**（不用先装 ima），按品类分，标个人/机构与订阅数 |
 | AI 知识库（侧栏底卡） | 整站打包成 Markdown：公开精选 / 进圈领完整版 / 下载 .md / 收藏 |
-| 顾问工作台 | 五步流水线：客户档案 → 诊断测算 → 场景匹配 → 方案区间 → 留痕；本地存、可打印 A4 |
+| 投资工作台 | 敬请期待 |
 
 作者：燃冰（10 年金融产品人）。做的是投资平权。
 
@@ -101,6 +101,7 @@ GitHub Pages，主分支根目录：`https://lj22503.github.io/mangosource/`
 cd D:\claudework\mangosource
 git add -A; git commit -m "更新内容"; git push
 ```
+
 
 
 

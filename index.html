@@ -290,43 +290,6 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
 .librow-static{cursor:default}
 .libcopy{flex:none;font-size:11.5px;padding:6px 10px;border:1px solid var(--line2);border-radius:999px;background:#fff;color:var(--soft);cursor:pointer;font-family:inherit}
 .libcopy:hover{border-color:var(--accent);color:var(--accent)}
-/* 顾问工作台 */
-.wsec{margin-top:26px}
-.wsec:first-child{margin-top:8px}
-.wsh{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--ink);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
-.wgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px}
-.wf{display:flex;flex-direction:column;gap:5px}
-.wf-l{font-size:11.5px;color:var(--faint)}
-.wf-i{height:36px;padding:0 11px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:13px;font-family:inherit;color:var(--ink)}
-.wf-i:focus{outline:none;border-color:var(--accent)}
-.wdiag{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.wbox{border:1px solid var(--line);border-radius:10px;padding:12px 13px;background:#fff}
-.wb-l{font-size:11px;color:var(--faint);line-height:1.5}
-.wb-v{font-size:17px;font-weight:600;margin-top:6px;color:var(--ink)}
-.wnote{font-size:11px;color:var(--faint);margin-top:10px;line-height:1.6}
-.wscenes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.wscard{border:1px solid var(--line);border-radius:10px;padding:13px;background:#fff}
-.wsc-t{font-size:13.5px;font-weight:600}
-.wsc-v{font-family:var(--serif);font-size:12px;line-height:1.65;color:var(--soft);margin-top:6px}
-.wsc-s{margin-top:8px;font-size:11.5px;line-height:1.8;color:var(--faint)}
-.wsc-say{margin-top:9px;padding-top:8px;border-top:1px dashed var(--line);font-size:11px;color:var(--accent);line-height:1.6}
-.wplan{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.wpl{border:1px solid var(--line);border-radius:10px;padding:12px 13px;background:#fff}
-.wpl b{display:block;font-size:11px;color:var(--faint);font-weight:400}
-.wpl span{display:block;font-size:15px;font-weight:600;margin-top:6px}
-.wbar{position:sticky;bottom:0;display:flex;gap:10px;margin-top:28px;padding:14px 0;background:linear-gradient(180deg,rgba(252,251,248,0),#fcfbf8 40%)}
-.wbtn{height:38px;padding:0 18px;border-radius:999px;background:var(--ink);color:#fcfcf8;border:1px solid var(--ink);font-size:13px;font-family:inherit;cursor:pointer}
-.wbtn-ghost{background:#fff;color:var(--ink);border-color:var(--line2)}
-.wbtn:hover{opacity:.9}
-@media(max-width:900px){.wgrid{grid-template-columns:1fr}.wdiag,.wscenes,.wplan{grid-template-columns:1fr 1fr}}
-@media(max-width:640px){.wdiag,.wscenes,.wplan{grid-template-columns:1fr}}
-@media print{
-  .side,.mhead,.wbar,.kbnuse,.s-promo{display:none !important}
-  .wrap{display:block !important;padding:0 !important}
-  #body{padding:0}
-  .wsec{break-inside:avoid}
-  .wscard,.wbox,.wpl{break-inside:avoid}
-}
 </style>
 <meta name="description" content="按「你遇到什么」分层的投资资源导航：场景、工具、大师、Skill、词典、提示词。不荐股、不预测，只给能直接用的资源与方法。"/><meta property="og:title" content="MangoSource · 投资资源地图"/><meta property="og:description" content="先看你遇到什么，再给你能直接用的资源与提示词。"/><meta property="og:type" content="website"/><meta property="og:image" content="https://lj22503.github.io/mangosource/assets/card-01-can-i-buy.png"/><meta name="twitter:card" content="summary_large_image"/></head>
 <body>
@@ -350,7 +313,7 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
       <button data-view="word">投资词典</button>
       <button data-view="prompt">投资提示词</button>
       <button data-view="lib">投资知识库</button>
-      <button data-view="work">顾问工作台</button>
+      <span class="soon" data-tip="敬请期待">投资工作台</span>
     </nav>
     <div class="s-meta">
       <div class="s-promo s-slider" id="promo">
@@ -1409,160 +1372,6 @@ function libView(){
   body.appendChild(list);
 }
 
-// ---------- 顾问工作台：把资源串成一条流程 ----------
-var WKEY="mango_workbench_v1";
-var W=(function(){
-  try{ var raw=localStorage.getItem(WKEY); if(raw) return JSON.parse(raw); }catch(e){}
-  return {name:"",age:"",assets:"",expense:"",horizon:"",drawdown:"",goal:"",who:"",level:"",mistakes:[],trace:{basis:"",worse:"",approver:"",review:""}};
-})();
-function wsave(){ try{ localStorage.setItem(WKEY,JSON.stringify(W)); }catch(e){} }
-function wnum(v){ var n=parseFloat(String(v||"").replace(/[^\d.]/g,"")); return isNaN(n)?0:n; }
-function wcalc(){
-  var assets=wnum(W.assets), expense=wnum(W.expense), dd=wnum(W.drawdown);
-  var emergency=expense*6;
-  var investable=Math.max(0, assets-emergency);
-  var equityCap=dd>0?Math.min(80, Math.round(dd/35*100)):0;
-  var worst=Math.round(investable*equityCap/100*0.35);
-  return {assets:assets, expense:expense, dd:dd, emergency:emergency, investable:investable, equityCap:equityCap, worst:worst};
-}
-function wmatch(){
-  var key=(W.goal+" "+W.horizon+" "+W.drawdown+" "+(W.mistakes||[]).join(" ")).toLowerCase();
-  var scored=SCENES.map(function(s){
-    var t=(s.t+" "+s.v+" "+s.tags.join(" ")+" "+(s.why||[]).join(" ")).toLowerCase();
-    var score=0;
-    ["跌","割","亏","回撤","追","贵","估值","稳","保本","养老","孩子","房","退休","基金","保险","杠杆","经理","年终"].forEach(function(k){ if(key.indexOf(k)>-1 && t.indexOf(k)>-1) score+=2; });
-    if(W.horizon && t.indexOf(W.horizon)>-1) score+=1;
-    score+=(W.mistakes||[]).filter(function(m){ return t.indexOf(m)>-1; }).length*3;
-    return {s:s, score:score};
-  }).sort(function(a,b){ return b.score-a.score; });
-  return scored.slice(0,3).map(function(x){ return x.s; });
-}
-function workView(){
-  $("#h1").textContent="顾问工作台";
-  $("#sub").textContent="从客户档案到方案，一页走完；数据只存在你这台机器上。";
-  var body=$("#body"); body.innerHTML="";
-  var c=wcalc(), m=wmatch();
-
-  function fld(label,key,ph,type){
-    var wrap=el("label","wf");
-    wrap.appendChild(el("span","wf-l",label));
-    var inp=document.createElement("input");
-    inp.className="wf-i"; inp.type=type||"text"; inp.placeholder=ph||"";
-    inp.value=W[key]||"";
-    inp.oninput=function(){ W[key]=inp.value; wsave(); refresh(); };
-    wrap.appendChild(inp);
-    return wrap;
-  }
-  var refresh=function(){
-    var n=wcalc(), mm=wmatch();
-    var setTxt=function(id,v){ var node=document.getElementById(id); if(node) node.textContent=v; };
-    setTxt("w-em", n.emergency?("¥"+n.emergency.toLocaleString()):"—");
-    setTxt("w-inv", n.investable?("¥"+n.investable.toLocaleString()):"—");
-    setTxt("w-eq", n.equityCap?(n.equityCap+"%"):"—");
-    setTxt("w-worst", n.worst?("¥"+n.worst.toLocaleString()):"—");
-    var low=Math.max(0,n.equityCap-10), high=n.equityCap;
-    var planNode=document.getElementById("w-plan");
-    if(planNode){
-      planNode.innerHTML='<div class="wpl"><b>权益</b><span>'+(n.equityCap?(low+"% – "+high+"%"):"先填承受回撤")+'</span></div>'+
-        '<div class="wpl"><b>固收/存款</b><span>'+(n.equityCap?((100-high)+"% – "+(100-low)+"%"):"—")+'</span></div>'+
-        '<div class="wpl"><b>最坏情况</b><span>'+(n.worst?("约亏 ¥"+n.worst.toLocaleString()):"—")+'</span></div>'+
-        '<div class="wpl"><b>复核周期</b><span>'+((W.horizon&&W.horizon.indexOf("三")>-1)?"每季度":"每半年")+'</span></div>';
-    }
-    var scNode=document.getElementById("w-scenes");
-    if(scNode){
-      scNode.innerHTML="";
-      mm.forEach(function(s){
-        var card=el("div","wscard");
-        card.appendChild(el("div","wsc-t",s.t));
-        card.appendChild(el("div","wsc-v","「"+s.v+"」"));
-        var steps=el("div","wsc-s");
-        if(s.s1) steps.appendChild(el("div",null,"① "+s.s1.d));
-        if(s.s2) steps.appendChild(el("div",null,"② "+s.s2.d));
-        if(s.s3) steps.appendChild(el("div",null,"③ "+s.s3.d));
-        card.appendChild(steps);
-        card.appendChild(el("div","wsc-say","客户这么说时，你先接一句：「"+s.v+"」"));
-        scNode.appendChild(card);
-      });
-    }
-  };
-
-  // 01 客户档案
-  var s1=el("div","wsec");
-  s1.appendChild(el("div","wsh","01 客户档案"));
-  var g1=el("div","wgrid");
-  g1.appendChild(fld("客户","client","张先生"));
-  g1.appendChild(fld("年龄","age","45","number"));
-  g1.appendChild(fld("总资产（元）","assets","2000000","number"));
-  g1.appendChild(fld("每月支出（元）","expense","15000","number"));
-  g1.appendChild(fld("资金期限","horizon","三年内不用 / 五年以上"));
-  g1.appendChild(fld("可承受回撤（%）","drawdown","15","number"));
-  g1.appendChild(fld("目标","goal","长期增值 / 稳定现金流 / 教育金"));
-  g1.appendChild(fld("谁影响决策","who","太太参与 / 自己做主"));
-  s1.appendChild(g1);
-  body.appendChild(s1);
-
-  // 02 诊断
-  var s2=el("div","wsec");
-  s2.appendChild(el("div","wsh","02 诊断：先算三笔数"));
-  var d=el("div","wdiag");
-  [["应急金（6 个月支出）","w-em"],["可投资金（扣除应急金）","w-inv"],["权益上限（按承受回撤推算）","w-eq"],["最坏情况亏损（权益×35%）","w-worst"]].forEach(function(pair,idx){
-    var b=el("div","wbox");
-    b.appendChild(el("div","wb-l",pair[0]));
-    var v=el("div","wb-v","—"); v.id=pair[1];
-    b.appendChild(v);
-    d.appendChild(b);
-  });
-  s2.appendChild(d);
-  s2.appendChild(el("div","wnote","规则：权益上限 = 可承受回撤 ÷ 35%（沪深 300 历史级回撤）× 100，最高 80%。这是粗算，用来挡掉明显不匹配的方案。"));
-  body.appendChild(s2);
-
-  // 03 匹配场景
-  var s3=el("div","wsec");
-  s3.appendChild(el("div","wsh","03 他最像的三种处境（自动匹配）"));
-  var sc=el("div","wscenes"); sc.id="w-scenes";
-  s3.appendChild(sc);
-  body.appendChild(s3);
-
-  // 04 方案
-  var s4=el("div","wsec");
-  s4.appendChild(el("div","wsh","04 方案区间（不是单一比例）"));
-  var plan=el("div","wplan"); plan.id="w-plan";
-  s4.appendChild(plan);
-  body.appendChild(s4);
-
-  // 05 留痕
-  var s5=el("div","wsec");
-  s5.appendChild(el("div","wsh","05 留痕（缺一不能发）"));
-  var g5=el("div","wgrid");
-  ["basis:依据（数据/来源）","worse:假设（最坏情况）","approver:谁批的","review:复核日"].forEach(function(x){
-    var k=x.split(":")[0], label=x.split(":")[1];
-    var wrap=el("label","wf");
-    wrap.appendChild(el("span","wf-l",label));
-    var inp=document.createElement("input");
-    inp.className="wf-i"; inp.value=(W.trace&&W.trace[k])||"";
-    inp.oninput=function(){ W.trace=W.trace||{}; W.trace[k]=inp.value; wsave(); };
-    wrap.appendChild(inp);
-    g5.appendChild(wrap);
-  });
-  s5.appendChild(g5);
-  body.appendChild(s5);
-
-  // 操作条
-  var bar=el("div","wbar");
-  var pbtn=el("button","wbtn","导出这一页（A4）"); pbtn.onclick=function(){ window.print(); };
-  var cbtn=el("button","wbtn wbtn-ghost","复制文字版");
-  cbtn.onclick=function(){
-    var n=wcalc(), mm=wmatch();
-    var txt="【客户】"+(W.client||"")+"\n【诊断】应急金 "+n.emergency+"；可投资金 "+n.investable+"；权益上限 "+n.equityCap+"%\n【场景】"+mm.map(function(s){return s.t;}).join(" / ")+"\n【方案】权益 "+Math.max(0,n.equityCap-10)+"%-"+n.equityCap+"%，最坏约亏 "+n.worst+"\n【留痕】依据："+(W.trace.basis||"")+"；假设："+(W.trace.worse||"")+"；审批："+(W.trace.approver||"")+"；复核："+(W.trace.review||"");
-    copyText(txt,cbtn,"复制文字版");
-  };
-  var rbtn=el("button","wbtn wbtn-ghost","清空");
-  rbtn.onclick=function(){ if(!confirm("清空当前客户资料？")) return; try{localStorage.removeItem(WKEY);}catch(e){} W={name:"",age:"",assets:"",expense:"",horizon:"",drawdown:"",goal:"",who:"",level:"",mistakes:[],trace:{}}; workView(); };
-  bar.appendChild(pbtn); bar.appendChild(cbtn); bar.appendChild(rbtn);
-  body.appendChild(bar);
-  refresh();
-}
-
 function paint(){
   document.querySelectorAll("#nav button").forEach(function(b){ b.setAttribute("aria-current",b.dataset.view===view); b.setAttribute("data-track","nav"); b.setAttribute("data-track-sub",b.dataset.view); });
   renderTabs();
@@ -1573,7 +1382,6 @@ function paint(){
   else if(view==="prompt")promptView();
   else if(view==="kb")kbView();
   else if(view==="lib")libView();
-  else if(view==="work")workView();
   else if(view==="desk")rowsView("工作台","一屏把事看完的地方。挑一个当主战场，别都装。",[["常用",DESKS]]);
   else masterView();
   window.scrollTo({top:0});
