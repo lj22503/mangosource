@@ -287,6 +287,9 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
 @media(max-width:640px){.librow{gap:12px;padding:15px 2px}.libmark{width:32px;height:32px;font-size:14px;border-radius:8px}.libgo{display:none}}
 .promptbox{margin-top:12px;background:#f4f2ec;border-radius:10px;padding:12px 14px}
 .promptbox .ptext{margin:0 0 10px;font-size:12px;line-height:1.75;color:var(--soft);white-space:pre-wrap;font-family:var(--sans)}
+.librow-static{cursor:default}
+.libcopy{flex:none;font-size:11.5px;padding:6px 10px;border:1px solid var(--line2);border-radius:999px;background:#fff;color:var(--soft);cursor:pointer;font-family:inherit}
+.libcopy:hover{border-color:var(--accent);color:var(--accent)}
 </style>
 <meta name="description" content="按「你遇到什么」分层的投资资源导航：场景、工具、大师、Skill、词典、提示词。不荐股、不预测，只给能直接用的资源与方法。"/><meta property="og:title" content="MangoSource · 投资资源地图"/><meta property="og:description" content="先看你遇到什么，再给你能直接用的资源与提示词。"/><meta property="og:type" content="website"/><meta property="og:image" content="https://lj22503.github.io/mangosource/assets/card-01-can-i-buy.png"/><meta name="twitter:card" content="summary_large_image"/></head>
 <body>
@@ -1214,42 +1217,67 @@ function openLock(){
   $("#ov").classList.add("on"); document.body.style.overflow="hidden";
 }
 
-// [名称, 维度[], 来源, 一句, 数据1, 数据2, 出处, 直达链接]
+// [名称, 维度[], 来源, 一句, 订阅, 内容, 创作者, 直达链接]
 const LIB = [
-  ["A股证券知识库",["个股"],"机构","A 股个股资料每日更新：公告、研报、财务、资金面，一只票的来龙去脉都在这。",
-   "每日更新","全 A","ima","https://ima.qq.com/wikis?knowledgeBaseId=7327893373851708&subSceneId=6002&needAutoLogin=0&launchChannel="],
-  ["美股证券知识库",["个股"],"机构","看美股不用翻英文 10-K，这里把财报与研报整理成中文可问。",
-   "持续更新","美股","ima","https://ima.qq.com/wikis?knowledgeBaseId=7341069570159647&subSceneId=6002&needAutoLogin=0&launchChannel="],
-  ["股票投资助手Pro",["个股","宏观"],"个人","行情 + 券商研报 + 财报结构 + 产业链 + 估值模型，带宏观利率与资金流。",
-   "653 订阅","2.4 万条","资源采集助手","https://ima.qq.com/wiki/?shareId=cc1838e1387de46d91230186649deb8ed62304c8daae0596542b55257f970343"],
-  ["长安投研",["宏观","个股"],"机构","机构的投研底稿：策略、行业、公司三层，观点带出处。",
-   "持续更新","投研","ima","https://ima.qq.com/wikis?knowledgeBaseId=7297585010204027&subSceneId=6002&needAutoLogin=0&launchChannel="],
-  ["最全研报知识库",["宏观"],"机构","腾讯财经与 ima 合建：2020 年以来超百家券商与智库的深度研报。",
-   "持续更新","研报","ima","https://ima.qq.com/wikis?knowledgeBaseId=7419228206421351&subSceneId=6002&needAutoLogin=0&launchChannel="],
-  ["睿远基金投教基地",["方法","基金"],"机构","按认知 → 方法 → 心法 → 实践四层写：估值、资产配置、定投、恐惧与贪婪。",
-   "450+ 篇","官方","睿远基金","https://ima.qq.com/wikis?knowledgeBaseId=7492874627216840&subSceneId=6002&needAutoLogin=0&launchChannel="],
-  ["有知有行 · 资料库",["方法","基金"],"机构","投资第一课、四笔钱、定投、财务盘点——普通人建立框架最省力的一条路。",
+  ["最全研报知识库",["宏观","个股"],"机构","超百家券商与智库的深度研报：晨会纪要、宏观、策略、行业、公司研究报告。",
+   "58,265 订阅","100 万+ 条","腾讯财经 · ima","https://ima.qq.com/wiki/?shareId=a0ff49161357bd4541252febac6d07d94b587db20568088ac9f985e4178ed681"],
+  ["长安投研",["宏观","个股"],"机构","6 万+ 投行与产业专家调研纪要，每日更新，看机构在一线听到了什么。",
+   "40,059 订阅","6.1 万条","长安卫公 · ima","https://ima.qq.com/wiki/?shareId=f08b5ea60b8e9f49e92d3b0aeeb6c6620fb452183e01e9e82e13d6e8a8d33860"],
+  ["A股证券知识库",["个股"],"机构","沪深京的新闻、公告、研报全在这，一只票的公开信息一次查完，每日更新。",
+   "38,414 订阅","4.4 万条","腾讯自选股 · ima","https://ima.qq.com/wiki/?shareId=d94ef3c8b05decd41a8db4c0c4075f2f3a2fa802c06e3b87891d0cad9ac504f0"],
+  ["美股证券知识库",["个股"],"机构","美股新闻、公告、研报整理成中文，问它比翻 10-K 快。",
+   "9,176 订阅","6,217 条","腾讯自选股 · ima","https://ima.qq.com/wiki/?shareId=5b2d6acd1dae78428f88f4acc0b59574276556bc1b2a6d4f3c7d46706ad53e3b"],
+  ["睿远基金投教基地",["方法","基金"],"机构","官方投教：投资全旅程、长期投资、基金定投，四层体系从认知讲到心法。",
+   "266 订阅","433 条","睿远基金 · ima","https://ima.qq.com/wiki/?shareId=43a466d3e91e5ce3da1481247915639c8b4dfcb733e5a6cf6b3b457293a1a55a"],
+  ["有知有行 · 资料库",["方法","基金"],"机构","投资第一课、四笔钱、定投、财务盘点——普通人建框架最省力的一条路。",
    "全站","免费","有知有行","https://youzhiyouxing.cn/materials"],
-  ["投资经典著作",["方法"],"个人","《穷查理宝典》《投资最重要的事》《怎样选择成长股》等 25 本原书 PDF。",
-   "1,153 订阅","25 本","forcode奇想录","https://ima.qq.com/wiki/?shareId=6e953bbfa8096a1ac97b2514ae915de2f5f603943c3eecdd65af0a484db771f7"],
-  ["股票量化因子 · AI 决策引擎",["方法","个股"],"个人","2200+ 维因子池，开源股票系统 myhhub/stock 的配套库。",
-   "5,407 订阅","5,269 条","myhhub/stock","https://ima.qq.com/wiki/?shareId=8b0da768c77bc863f1cad8eb9482e37a6eeb26ad7171523b687d48c1a67c8e2c"],
-  ["聚宽回测助手",["方法"],"个人","写聚宽回测代码时查 API：因子、指数、债券、期权数据都有。",
-   "14 订阅","15 条","码上生财","https://ima.qq.com/wiki/?shareId=c948fc88cdf564ede724739850b95aba6257f3160fed42b9503f1124b58c03e4"],
-  ["兜兜爸投资知识库",["财报"],"个人","明星股年报 PDF：腾讯、美的、招行、中信、比亚迪、药明康德、恒瑞。",
-   "103 订阅","49 份","JZhou","https://ima.qq.com/wiki/?shareId=b1bb7ac6b0899277e1908000a69888edb97cb7c79b7733acc5c3dedcbfba490b"],
   ["集思录",["基金","方法"],"社区","可转债、REITs、打新、套利的老玩家都在这，数据与话题一起看。",
    "十余年","社区","集思录","https://www.jisilu.cn"],
-  ["微信读书 · 投资经典",["方法"],"平台","上面 19 位大师的书基本都能读，14 本已直接链到具体书页。",
-   "20 万+ 本","全站","微信读书","https://weread.qq.com"],
-  ["MBA 智库 · 投资百科",["方法"],"百科","查概念用它：一个名词一页，比翻文章快。",
-   "全站","百科","MBA 智库","https://wiki.mbalib.com"],
 ];
-const LIB_CATS = ["全部","个股","基金","财报","宏观","方法"];
+// 库主没生成 shareId 的，只能复制库名去 ima 搜
+const LIB_SEARCH = [
+  ["易方达基金",["指数","基金"],"6,513 订阅","1,906 条","易方达基金","ima_kb_ucfXVhZY","装它的 ETF 查询 Skill，可以反查「我持有的股票被哪些 ETF 重仓」"],
+  ["华夏基金",["基金"],"812 订阅","353 条","华夏基金","ima_kb_pSp4U6Yr","权益好基、产业新知、养基陪伴、ETF 科普六个栏目"],
+  ["A股千亿市值公司财报/研报",["个股","财报"],"10,001 订阅","914 条","腾讯财经","ima_kb_bo5h4Dxf","盯龙头做体检：季报、研报、机构目标价变动"],
+  ["A股银行行业研究",["宏观"],"1,465 订阅","44,205 条","腾讯财经","ima_kb_CxJ9x4PU","通过银行看经济全貌：净息差、利率、楼市都在这条线上"],
+  ["深度行业报告",["个股"],"12,442 订阅","598 条","自然派","ima_kb_5wqu0zFj","从券商与咨询报告里筛精品，不追日更、要质量"],
+  ["华尔街见闻精选内容知识库",["宏观"],"2,221 订阅","100 条","华尔街见闻","ima_kb_i9GEvYvf","7×24 快讯 + 新闻 Skill，热点第一时间抓到"],
+  ["投资方法论",["方法"],"1,053 订阅","3,145 条","WhiteRhino","ima_kb_dpz9EHl6","估值、仓位、流派区别、复利，搭认知框架用"],
+  ["价值投资股票投资知识库",["方法"],"10,017 订阅","1,921 条","Slow is fast","ima_kb_ZYyZaFww","唐朝、散户乙那一套：好公司、好价格、拿住"],
+  ["投资那点事",["方法"],"3,375 订阅","2,588 条","岁盈","ima_kb_YMmXCw1m","把投资还原成人生决策，补方法论补不了的「人性课」"],
+];
+const LIB_CATS = ["全部","指数","个股","基金","财报","宏观","方法"];
 let libCat="全部";
+function libRow(x, direct){
+  var a=direct?el("a","librow"):el("div","librow librow-static");
+  if(direct){ a.href=x[7]; a.target="_blank"; a.rel="noopener"; a.setAttribute("data-track","kb_open"); a.setAttribute("data-track-sub",x[0]); }
+  var mark=el("div","libmark"+(x[2]==="个人"?" p":""));
+  mark.textContent=x[0].charAt(0);
+  a.appendChild(mark);
+  var main=el("div","libmain");
+  var h=el("div","libhead");
+  h.appendChild(el("span","libname",x[0]));
+  h.appendChild(el("span","sk-src "+(direct?"org":"per"),direct?"直达":"搜订阅"));
+  x[1].forEach(function(c){ h.appendChild(el("span","libtag",c)); });
+  main.appendChild(h);
+  main.appendChild(el("div","libdesc",x[3]));
+  var meta=el("div","libmeta");
+  [x[4],x[5],x[6]].forEach(function(v,i){ if(i) meta.appendChild(el("span",null,"·")); meta.appendChild(el("span",null,v)); });
+  main.appendChild(meta);
+  a.appendChild(main);
+  if(direct){
+    a.appendChild(el("div","libgo","打开 ↗"));
+  } else {
+    var b=el("button","libcopy","复制库名");
+    b.type="button";
+    b.onclick=function(){ copyText(x[0]+"　"+x[7],b,"复制库名"); };
+    a.appendChild(b);
+  }
+  return a;
+}
 function libView(){
   $("#h1").textContent="投资知识库";
-  $("#sub").textContent="按维度整理的资料库。点开直接看，不用注册。";
+  $("#sub").textContent="按维度整理。能直达的点开就看，不能的复制库名去 ima 搜。";
   var body=$("#body"); body.innerHTML="";
   var tabs=el("div","tabs");
   LIB_CATS.forEach(function(c){
@@ -1260,34 +1288,17 @@ function libView(){
   });
   body.appendChild(tabs);
   var list=el("div","liblist");
-  LIB.filter(function(x){return libCat==="全部"||x[1].indexOf(libCat)>-1;}).forEach(function(x){
-    var a=el("a","librow");
-    a.href=x[7]; a.target="_blank"; a.rel="noopener";
-    a.setAttribute("data-track","kb_open"); a.setAttribute("data-track-sub",x[0]);
-    var mark=el("div","libmark"+(x[2]==="个人"?" p":""));
-    mark.textContent=x[0].charAt(0);
-    a.appendChild(mark);
-    var main=el("div","libmain");
-    var h=el("div","libhead");
-    h.appendChild(el("span","libname",x[0]));
-    h.appendChild(el("span","sk-src "+(x[2]==="个人"?"per":"org"),x[2]));
-    x[1].forEach(function(c){ h.appendChild(el("span","libtag",c)); });
-    main.appendChild(h);
-    main.appendChild(el("div","libdesc",x[3]));
-    var meta=el("div","libmeta");
-    [x[4],x[5],x[6]].forEach(function(v,i){
-      if(i) meta.appendChild(el("span",null,"·"));
-      meta.appendChild(el("span",null,v));
-    });
-    main.appendChild(meta);
-    a.appendChild(main);
-    a.appendChild(el("div","libgo","打开 ↗"));
-    list.appendChild(a);
-  });
+  LIB.filter(function(x){return libCat==="全部"||x[1].indexOf(libCat)>-1;}).forEach(function(x){ list.appendChild(libRow(x,true)); });
   body.appendChild(list);
-
+  var rest=LIB_SEARCH.filter(function(x){return libCat==="全部"||x[1].indexOf(libCat)>-1;});
+  if(rest.length){
+    body.appendChild(el("div","grp","没有分享链接 · 复制库名去 ima 搜"));
+    var l2=el("div","liblist");
+    rest.forEach(function(x){ l2.appendChild(libRow(x,false)); });
+    body.appendChild(l2);
+  }
   var p=el("div","kbnuse");
-  p.innerHTML='<b>还缺的几个，这样找</b><div>易方达、华夏、华尔街见闻这几个官方知识号没有公开直达链接，只能在 ima 里搜。复制下面这段，粘给 ima 或你的 AI，它会一步步带你订阅。</div><div class="promptbox"><pre class="ptext">我要在腾讯 ima 里订阅三个官方知识库：易方达基金、华夏基金、华尔街见闻。\n\n请按这个格式给我操作步骤：\n1 打开 ima 的哪里（发现 → 知识库广场）\n2 每个搜什么关键词\n3 订阅后能问什么（各给 3 个具体问题示例）\n4 它们的 Skill 怎么装（如果有）\n\n不要给我链接，只给在 App 里的操作路径。</pre><button class="sk-copy" onclick="copyText(this.parentNode.querySelector(\'.ptext\').textContent,this,\'复制这段\')">复制这段</button></div>';
+  p.innerHTML='<b>为什么分两段</b><div>ima 的直达链接（shareId）只有库主能生成。上面 7 个有，点开就是；下面 9 个没有，只能复制库名去「发现 → 知识库广场」搜，第一条就是它。订阅数取自 2026-11-25。</div>';
   body.appendChild(p);
 }
 
@@ -1476,6 +1487,7 @@ paint();
 </script>
 </body>
 </html>
+
 
 
 
