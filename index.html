@@ -290,6 +290,43 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
 .librow-static{cursor:default}
 .libcopy{flex:none;font-size:11.5px;padding:6px 10px;border:1px solid var(--line2);border-radius:999px;background:#fff;color:var(--soft);cursor:pointer;font-family:inherit}
 .libcopy:hover{border-color:var(--accent);color:var(--accent)}
+/* 顾问工作台 */
+.wsec{margin-top:26px}
+.wsec:first-child{margin-top:8px}
+.wsh{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--ink);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.wgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px}
+.wf{display:flex;flex-direction:column;gap:5px}
+.wf-l{font-size:11.5px;color:var(--faint)}
+.wf-i{height:36px;padding:0 11px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:13px;font-family:inherit;color:var(--ink)}
+.wf-i:focus{outline:none;border-color:var(--accent)}
+.wdiag{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.wbox{border:1px solid var(--line);border-radius:10px;padding:12px 13px;background:#fff}
+.wb-l{font-size:11px;color:var(--faint);line-height:1.5}
+.wb-v{font-size:17px;font-weight:600;margin-top:6px;color:var(--ink)}
+.wnote{font-size:11px;color:var(--faint);margin-top:10px;line-height:1.6}
+.wscenes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.wscard{border:1px solid var(--line);border-radius:10px;padding:13px;background:#fff}
+.wsc-t{font-size:13.5px;font-weight:600}
+.wsc-v{font-family:var(--serif);font-size:12px;line-height:1.65;color:var(--soft);margin-top:6px}
+.wsc-s{margin-top:8px;font-size:11.5px;line-height:1.8;color:var(--faint)}
+.wsc-say{margin-top:9px;padding-top:8px;border-top:1px dashed var(--line);font-size:11px;color:var(--accent);line-height:1.6}
+.wplan{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.wpl{border:1px solid var(--line);border-radius:10px;padding:12px 13px;background:#fff}
+.wpl b{display:block;font-size:11px;color:var(--faint);font-weight:400}
+.wpl span{display:block;font-size:15px;font-weight:600;margin-top:6px}
+.wbar{position:sticky;bottom:0;display:flex;gap:10px;margin-top:28px;padding:14px 0;background:linear-gradient(180deg,rgba(252,251,248,0),#fcfbf8 40%)}
+.wbtn{height:38px;padding:0 18px;border-radius:999px;background:var(--ink);color:#fcfcf8;border:1px solid var(--ink);font-size:13px;font-family:inherit;cursor:pointer}
+.wbtn-ghost{background:#fff;color:var(--ink);border-color:var(--line2)}
+.wbtn:hover{opacity:.9}
+@media(max-width:900px){.wgrid{grid-template-columns:1fr}.wdiag,.wscenes,.wplan{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.wdiag,.wscenes,.wplan{grid-template-columns:1fr}}
+@media print{
+  .side,.mhead,.wbar,.kbnuse,.s-promo{display:none !important}
+  .wrap{display:block !important;padding:0 !important}
+  #body{padding:0}
+  .wsec{break-inside:avoid}
+  .wscard,.wbox,.wpl{break-inside:avoid}
+}
 </style>
 <meta name="description" content="按「你遇到什么」分层的投资资源导航：场景、工具、大师、Skill、词典、提示词。不荐股、不预测，只给能直接用的资源与方法。"/><meta property="og:title" content="MangoSource · 投资资源地图"/><meta property="og:description" content="先看你遇到什么，再给你能直接用的资源与提示词。"/><meta property="og:type" content="website"/><meta property="og:image" content="https://lj22503.github.io/mangosource/assets/card-01-can-i-buy.png"/><meta name="twitter:card" content="summary_large_image"/></head>
 <body>
@@ -313,7 +350,7 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
       <button data-view="word">投资词典</button>
       <button data-view="prompt">投资提示词</button>
       <button data-view="lib">投资知识库</button>
-      <span class="soon" data-tip="敬请期待">投资工作台</span>
+      <button data-view="work">顾问工作台</button>
     </nav>
     <div class="s-meta">
       <div class="s-promo s-slider" id="promo">
@@ -798,6 +835,78 @@ const SCENES = [
    s2:{d:"把「机构投资的一天」九个环节抄成自己的日程", u:"Forge：机构投资的一天"},
    s3:{d:"让 AI 按你的作息排一张每日 20 分钟清单", p:"我是上班族，每天只有 20 分钟看投资。请给我一张每日清单：按时间顺序列 4 个动作，每个动作指明用什么工具、看什么、看完做什么决定。"},
    end:"先只保留 3 个入口，跑两周再加。"},
+  {t:"这钱我随时要用，能买点啥", v:"随时要用的钱，本来就不该进权益。", w:"半年内要用 · 想赚点利息", tags:["保守","算账"],
+   why:["「随时要用」意味着你没有承受波动的余地，先分清期限再谈收益。","短期资金的对手不是收益率，是流动性。"],
+   s1:{d:"先给这笔钱定一个最短使用日", u:"词典：流动性"},
+   s2:{d:"按期限选工具：30 天内 / 半年 / 一年以上", u:"中国货币网：存款利率"},
+   s3:{d:"让 AI 按期限排三个选项", p:"我有 20 万，半年内可能要用（买房首付）。请给我三个选项：活期/货币基金、3 个月定期、同业存单指数，分别写清最坏情况和到账时间。不要推荐具体产品。"},
+   end:"先写下这笔钱最晚哪天要用，再决定放哪。"},
+  {t:"朋友推荐的私募，说年化 15%", v:"私募不是不能买，是你要先能看懂它怎么亏。", w:"朋友介绍 · 100 万起投 · 说稳", tags:["被推荐","想买"],
+   why:["「年化 15%」在私募里通常意味着承担了看不见的风险（杠杆、集中、流动性）。","朋友推荐时，他也不知道风险在哪，只知道自己赚钱了。"],
+   s1:{d:"查管理人是否在基金业协会备案", u:"基金业协会：私募查询"},
+   s2:{d:"看它过去三年的最大回撤与锁定期", u:"词典：最大回撤"},
+   s3:{d:"让 AI 帮你列一份私募尽调问题清单", p:"朋友推荐了一只私募，说年化 15%、100 万起投。请给我 10 个必须问清的问题（策略、杠杆、集中度、锁定期、赎回限制、业绩报酬、最大回撤、管理规模、关键人依赖、历史违约），并告诉我哪些答不上来就该放弃。"},
+   end:"先查备案，再谈收益。"},
+  {t:"我想给孩子留一笔教育金", v:"教育金的关键是时间确定，不是收益高。", w:"孩子 5 岁 · 目标 18 岁用 · 每年存 5 万", tags:["家人","算账"],
+   why:["18 岁这个时点是硬的，不能因为市场不好就晚两年。","所以它更适合「定期定额 + 到期前逐步降低波动」。"],
+   s1:{d:"先算出目标金额（学费现值 × 通胀）", u:"有知有行：教育金测算"},
+   s2:{d:"再算每年要存多少", u:"词典：定投"},
+   s3:{d:"让 AI 排一条从 5 岁到 18 岁的降波动路径", p:"孩子 5 岁，18 岁要用教育金，目标 100 万，每年能存 5 万。请按 5% 年化算缺口，并给我一条随时间降低波动的配置路径（前 8 年偏股、后 5 年逐步转债），说明每年该调多少。"},
+   end:"先算目标金额，再谈每年存多少。"},
+  {t:"我全仓一只票，赚了很多", v:"赚得多的集中持仓，风险也从没这么大过。", w:"单只占 80% · 浮盈 3 倍", tags:["有仓位","进阶"],
+   why:["集中持仓的收益来自运气与判断的混合，但回撤是 100% 由你承担。","越赚越不敢卖，是处置效应在起作用。"],
+   s1:{d:"算这只票跌 50% 对你的总资产意味着什么", u:"词典：集中度风险"},
+   s2:{d:"看分批减仓的历史效果（不是一次卖）", u:"韭圈儿：组合回测"},
+   s3:{d:"让 AI 给三个减仓节奏方案", p:"我有一只股票占总资产 80%，浮盈 3 倍，成本很低。请给我三个减仓节奏（一次性 / 分 4 季 / 按涨幅阶梯），分别写清税负、心理难度、错过的机会成本。"},
+   end:"今天先算一件事：它跌一半，你还剩多少。"},
+  {t:"理财经理说这个产品只卖三天", v:"限时销售是销售节奏，不是投资理由。", w:"银行客户经理 · 电话催 · 说额度紧", tags:["被推荐"],
+   why:["「只卖三天」制造的是稀缺感，不是价值。","真正好的产品不需要用倒计时卖。"],
+   s1:{d:"要一份完整的产品说明书和费率表", u:"中国理财网：产品查询"},
+   s2:{d:"对比同类产品的三年收益与回撤", u:"天天基金：同类对比"},
+   s3:{d:"让 AI 把话术拆成事实与情绪", p:"客户经理说：这个产品只卖三天，额度很紧，很多人抢。请把这句话拆成：哪部分是事实、哪部分是销售技巧、我该追问哪三个问题再决定。"},
+   end:"先要说明书，再谈买不买。"},
+  {t:"我退休了，每月要花 8000", v:"退休后第一件事不是投资，是排现金流。", w:"60 岁 · 存款 200 万 · 有退休金", tags:["保守","家人"],
+   why:["退休后的核心风险是「钱在人还在的时候用完了」，不是收益率低。","现金流要分层：近三年的钱不能碰波动资产。"],
+   s1:{d:"把钱分成三年用 / 五年用 / 十年以上三桶", u:"词典：现金流分层"},
+   s2:{d:"算每年可安全提取的比例", u:"cFIREsim：提取率测算"},
+   s3:{d:"让 AI 排一张三年现金流表", p:"我 60 岁退休，存款 200 万，每月要花 8000，有退休金 4000。请把 200 万分成三年用、五年用、十年以上三桶，算出每年该从哪桶取多少，并说明什么情况下要调整。"},
+   end:"先分桶，再谈收益。"},
+  {t:"别人都在赎回，我要不要也跑", v:"别人赎回是别人的约束，不是你的信号。", w:"群里恐慌 · 持仓浮亏 · 想跟着卖", tags:["情绪","有仓位"],
+   why:["赎回潮往往发生在最差的时候，因为它由情绪驱动。","你的约束（钱多久用、能亏多少）才决定该不该动。"],
+   s1:{d:"先看自己的约束有没有变（期限/用途）", u:"词典：资产配置"},
+   s2:{d:"再看市场温度，而不是群里的声音", u:"集思录：全市场温度"},
+   s3:{d:"让 AI 帮你把「别人的理由」和「你的理由」分开", p:"群里很多人在赎回，我也有浮亏。请帮我列一张表：左边是别人赎回的理由，右边是我自己的约束（钱多久用、能亏多少、目标是什么），最后告诉我，按我的约束该怎么做。"},
+   end:"把群消息静音一周，看你的决定会不会变。"},
+  {t:"保险到底该买哪种", v:"先买保障，再谈理财型保险。", w:"30 岁 · 有房贷 · 被推分红险", tags:["家人","保守"],
+   why:["理财型保险的收益通常跑不赢通胀，但保障型是刚需。","顺序错了，钱就白花了。"],
+   s1:{d:"先算保额需求（房贷 + 5 年收入）", u:"词典：保额"},
+   s2:{d:"再对比定期寿险与终身寿险的差价", u:"中国保险行业协会：条款库"},
+   s3:{d:"让 AI 按你的家庭结构排一个投保顺序", p:"我 30 岁，有房贷 100 万，年收入 30 万，有孩子 1 岁。请给我一个投保顺序与保额建议（先保障后理财），并说明每种保险解决什么问题、不该买什么。"},
+   end:"先把保额算出来，再谈买哪种。"},
+  {t:"这只基金换经理了我还不知道", v:"买主动基金，买的就是那个人。", w:"持有两年 · 没看公告", tags:["有仓位"],
+   why:["经理变更公告通常埋在信息披露里，很少有人看。","换人等于换产品，原来的买入理由消失了。"],
+   s1:{d:"查这只基金近一年的公告", u:"天天基金：基金公告"},
+   s2:{d:"看新经理过往管理记录", u:"天天基金：基金经理"},
+   s3:{d:"让 AI 判断原来的买入理由还成不成立", p:"我持有的一只主动基金换了基金经理。我当初买它的理由是认可原经理的方法。请列出三个判断依据，帮我决定继续持有还是换掉，不要推荐具体基金。"},
+   end:"把买它的理由写下来，理由消失就该走。"},
+  {t:"我想加杠杆，两倍杠杆赚得快", v:"杠杆放大的是结果，也放大你被震出去的概率。", w:"30 万本金 · 想融资 60 万", tags:["想买","进阶"],
+   why:["两倍杠杆下，标的跌 25% 你就接近爆仓，而 25% 的波动很常见。","杠杆的成本是强制的：时间不在你这边。"],
+   s1:{d:"先算爆仓线在哪", u:"词典：维持担保比例"},
+   s2:{d:"再看这只标的过去三年有没有单月跌 25%", u:"理杏仁：历史回撤"},
+   s3:{d:"让 AI 算三种情景下的存活概率", p:"我 30 万本金，想两倍杠杆。请按标的下跌 10%/20%/30% 三种情景，算出我的保证金比例与是否会被强平，并告诉我历史上这只标的多大频率出现过这种跌幅。"},
+   end:"先算爆仓线，再谈赚多少。"},
+  {t:"我买的理财亏了，能索赔吗", v:"能不能索赔，取决于卖的人有没有违规。", w:"净值型理财 · 亏 5% · 想投诉", tags:["亏钱"],
+   why:["净值型产品不保本，亏损本身不构成索赔理由。","但销售环节若违规（未双录、风险等级不匹配、承诺保本），就有空间。"],
+   s1:{d:"先确认产品风险等级与你当时测评是否匹配", u:"中国理财网：产品查询"},
+   s2:{d:"找销售时的双录、宣传材料、聊天记录", u:"词典：双录"},
+   s3:{d:"让 AI 帮你整理一份投诉要点", p:"我买的净值型理财亏了 5%，想投诉。请帮我整理：需要准备哪些证据、投诉该找哪个机构、哪些情况能成立哪些不能，按可能性排序。"},
+   end:"先把证据找齐，再谈能不能赔。"},
+  {t:"年终奖发下来，一次性投还是分批", v:"分批的意义是降低择时压力，不是提高收益。", w:"年终奖 20 万 · 已有持仓", tags:["想买","算账"],
+   why:["一次性投入在长期看胜率更高，但心理上更难承受。","分批的真正价值是让你敢开始。"],
+   s1:{d:"先看这笔钱占你总资产多少", u:"词典：仓位"},
+   s2:{d:"对比一次性与分批的历史差异", u:"韭圈儿：定投回测"},
+   s3:{d:"让 AI 按你的心理承受排一个分批计划", p:"年终奖 20 万，已有持仓 50 万。我担心一次性买在高点。请给我一个分批计划（分几次、每次多少、间隔多久），并说明如果市场一路上涨我会错过多少。"},
+   end:"先定能承受的最大浮亏，再定买多少。"},
 ];
 
 // 场景 → 其他五层的对应项：这就是把模块串起来的那根线
@@ -1300,6 +1409,160 @@ function libView(){
   body.appendChild(list);
 }
 
+// ---------- 顾问工作台：把资源串成一条流程 ----------
+var WKEY="mango_workbench_v1";
+var W=(function(){
+  try{ var raw=localStorage.getItem(WKEY); if(raw) return JSON.parse(raw); }catch(e){}
+  return {name:"",age:"",assets:"",expense:"",horizon:"",drawdown:"",goal:"",who:"",level:"",mistakes:[],trace:{basis:"",worse:"",approver:"",review:""}};
+})();
+function wsave(){ try{ localStorage.setItem(WKEY,JSON.stringify(W)); }catch(e){} }
+function wnum(v){ var n=parseFloat(String(v||"").replace(/[^\d.]/g,"")); return isNaN(n)?0:n; }
+function wcalc(){
+  var assets=wnum(W.assets), expense=wnum(W.expense), dd=wnum(W.drawdown);
+  var emergency=expense*6;
+  var investable=Math.max(0, assets-emergency);
+  var equityCap=dd>0?Math.min(80, Math.round(dd/35*100)):0;
+  var worst=Math.round(investable*equityCap/100*0.35);
+  return {assets:assets, expense:expense, dd:dd, emergency:emergency, investable:investable, equityCap:equityCap, worst:worst};
+}
+function wmatch(){
+  var key=(W.goal+" "+W.horizon+" "+W.drawdown+" "+(W.mistakes||[]).join(" ")).toLowerCase();
+  var scored=SCENES.map(function(s){
+    var t=(s.t+" "+s.v+" "+s.tags.join(" ")+" "+(s.why||[]).join(" ")).toLowerCase();
+    var score=0;
+    ["跌","割","亏","回撤","追","贵","估值","稳","保本","养老","孩子","房","退休","基金","保险","杠杆","经理","年终"].forEach(function(k){ if(key.indexOf(k)>-1 && t.indexOf(k)>-1) score+=2; });
+    if(W.horizon && t.indexOf(W.horizon)>-1) score+=1;
+    score+=(W.mistakes||[]).filter(function(m){ return t.indexOf(m)>-1; }).length*3;
+    return {s:s, score:score};
+  }).sort(function(a,b){ return b.score-a.score; });
+  return scored.slice(0,3).map(function(x){ return x.s; });
+}
+function workView(){
+  $("#h1").textContent="顾问工作台";
+  $("#sub").textContent="从客户档案到方案，一页走完；数据只存在你这台机器上。";
+  var body=$("#body"); body.innerHTML="";
+  var c=wcalc(), m=wmatch();
+
+  function fld(label,key,ph,type){
+    var wrap=el("label","wf");
+    wrap.appendChild(el("span","wf-l",label));
+    var inp=document.createElement("input");
+    inp.className="wf-i"; inp.type=type||"text"; inp.placeholder=ph||"";
+    inp.value=W[key]||"";
+    inp.oninput=function(){ W[key]=inp.value; wsave(); refresh(); };
+    wrap.appendChild(inp);
+    return wrap;
+  }
+  var refresh=function(){
+    var n=wcalc(), mm=wmatch();
+    var setTxt=function(id,v){ var node=document.getElementById(id); if(node) node.textContent=v; };
+    setTxt("w-em", n.emergency?("¥"+n.emergency.toLocaleString()):"—");
+    setTxt("w-inv", n.investable?("¥"+n.investable.toLocaleString()):"—");
+    setTxt("w-eq", n.equityCap?(n.equityCap+"%"):"—");
+    setTxt("w-worst", n.worst?("¥"+n.worst.toLocaleString()):"—");
+    var low=Math.max(0,n.equityCap-10), high=n.equityCap;
+    var planNode=document.getElementById("w-plan");
+    if(planNode){
+      planNode.innerHTML='<div class="wpl"><b>权益</b><span>'+(n.equityCap?(low+"% – "+high+"%"):"先填承受回撤")+'</span></div>'+
+        '<div class="wpl"><b>固收/存款</b><span>'+(n.equityCap?((100-high)+"% – "+(100-low)+"%"):"—")+'</span></div>'+
+        '<div class="wpl"><b>最坏情况</b><span>'+(n.worst?("约亏 ¥"+n.worst.toLocaleString()):"—")+'</span></div>'+
+        '<div class="wpl"><b>复核周期</b><span>'+((W.horizon&&W.horizon.indexOf("三")>-1)?"每季度":"每半年")+'</span></div>';
+    }
+    var scNode=document.getElementById("w-scenes");
+    if(scNode){
+      scNode.innerHTML="";
+      mm.forEach(function(s){
+        var card=el("div","wscard");
+        card.appendChild(el("div","wsc-t",s.t));
+        card.appendChild(el("div","wsc-v","「"+s.v+"」"));
+        var steps=el("div","wsc-s");
+        if(s.s1) steps.appendChild(el("div",null,"① "+s.s1.d));
+        if(s.s2) steps.appendChild(el("div",null,"② "+s.s2.d));
+        if(s.s3) steps.appendChild(el("div",null,"③ "+s.s3.d));
+        card.appendChild(steps);
+        card.appendChild(el("div","wsc-say","客户这么说时，你先接一句：「"+s.v+"」"));
+        scNode.appendChild(card);
+      });
+    }
+  };
+
+  // 01 客户档案
+  var s1=el("div","wsec");
+  s1.appendChild(el("div","wsh","01 客户档案"));
+  var g1=el("div","wgrid");
+  g1.appendChild(fld("客户","client","张先生"));
+  g1.appendChild(fld("年龄","age","45","number"));
+  g1.appendChild(fld("总资产（元）","assets","2000000","number"));
+  g1.appendChild(fld("每月支出（元）","expense","15000","number"));
+  g1.appendChild(fld("资金期限","horizon","三年内不用 / 五年以上"));
+  g1.appendChild(fld("可承受回撤（%）","drawdown","15","number"));
+  g1.appendChild(fld("目标","goal","长期增值 / 稳定现金流 / 教育金"));
+  g1.appendChild(fld("谁影响决策","who","太太参与 / 自己做主"));
+  s1.appendChild(g1);
+  body.appendChild(s1);
+
+  // 02 诊断
+  var s2=el("div","wsec");
+  s2.appendChild(el("div","wsh","02 诊断：先算三笔数"));
+  var d=el("div","wdiag");
+  [["应急金（6 个月支出）","w-em"],["可投资金（扣除应急金）","w-inv"],["权益上限（按承受回撤推算）","w-eq"],["最坏情况亏损（权益×35%）","w-worst"]].forEach(function(pair,idx){
+    var b=el("div","wbox");
+    b.appendChild(el("div","wb-l",pair[0]));
+    var v=el("div","wb-v","—"); v.id=pair[1];
+    b.appendChild(v);
+    d.appendChild(b);
+  });
+  s2.appendChild(d);
+  s2.appendChild(el("div","wnote","规则：权益上限 = 可承受回撤 ÷ 35%（沪深 300 历史级回撤）× 100，最高 80%。这是粗算，用来挡掉明显不匹配的方案。"));
+  body.appendChild(s2);
+
+  // 03 匹配场景
+  var s3=el("div","wsec");
+  s3.appendChild(el("div","wsh","03 他最像的三种处境（自动匹配）"));
+  var sc=el("div","wscenes"); sc.id="w-scenes";
+  s3.appendChild(sc);
+  body.appendChild(s3);
+
+  // 04 方案
+  var s4=el("div","wsec");
+  s4.appendChild(el("div","wsh","04 方案区间（不是单一比例）"));
+  var plan=el("div","wplan"); plan.id="w-plan";
+  s4.appendChild(plan);
+  body.appendChild(s4);
+
+  // 05 留痕
+  var s5=el("div","wsec");
+  s5.appendChild(el("div","wsh","05 留痕（缺一不能发）"));
+  var g5=el("div","wgrid");
+  ["basis:依据（数据/来源）","worse:假设（最坏情况）","approver:谁批的","review:复核日"].forEach(function(x){
+    var k=x.split(":")[0], label=x.split(":")[1];
+    var wrap=el("label","wf");
+    wrap.appendChild(el("span","wf-l",label));
+    var inp=document.createElement("input");
+    inp.className="wf-i"; inp.value=(W.trace&&W.trace[k])||"";
+    inp.oninput=function(){ W.trace=W.trace||{}; W.trace[k]=inp.value; wsave(); };
+    wrap.appendChild(inp);
+    g5.appendChild(wrap);
+  });
+  s5.appendChild(g5);
+  body.appendChild(s5);
+
+  // 操作条
+  var bar=el("div","wbar");
+  var pbtn=el("button","wbtn","导出这一页（A4）"); pbtn.onclick=function(){ window.print(); };
+  var cbtn=el("button","wbtn wbtn-ghost","复制文字版");
+  cbtn.onclick=function(){
+    var n=wcalc(), mm=wmatch();
+    var txt="【客户】"+(W.client||"")+"\n【诊断】应急金 "+n.emergency+"；可投资金 "+n.investable+"；权益上限 "+n.equityCap+"%\n【场景】"+mm.map(function(s){return s.t;}).join(" / ")+"\n【方案】权益 "+Math.max(0,n.equityCap-10)+"%-"+n.equityCap+"%，最坏约亏 "+n.worst+"\n【留痕】依据："+(W.trace.basis||"")+"；假设："+(W.trace.worse||"")+"；审批："+(W.trace.approver||"")+"；复核："+(W.trace.review||"");
+    copyText(txt,cbtn,"复制文字版");
+  };
+  var rbtn=el("button","wbtn wbtn-ghost","清空");
+  rbtn.onclick=function(){ if(!confirm("清空当前客户资料？")) return; try{localStorage.removeItem(WKEY);}catch(e){} W={name:"",age:"",assets:"",expense:"",horizon:"",drawdown:"",goal:"",who:"",level:"",mistakes:[],trace:{}}; workView(); };
+  bar.appendChild(pbtn); bar.appendChild(cbtn); bar.appendChild(rbtn);
+  body.appendChild(bar);
+  refresh();
+}
+
 function paint(){
   document.querySelectorAll("#nav button").forEach(function(b){ b.setAttribute("aria-current",b.dataset.view===view); b.setAttribute("data-track","nav"); b.setAttribute("data-track-sub",b.dataset.view); });
   renderTabs();
@@ -1310,6 +1573,7 @@ function paint(){
   else if(view==="prompt")promptView();
   else if(view==="kb")kbView();
   else if(view==="lib")libView();
+  else if(view==="work")workView();
   else if(view==="desk")rowsView("工作台","一屏把事看完的地方。挑一个当主战场，别都装。",[["常用",DESKS]]);
   else masterView();
   window.scrollTo({top:0});
@@ -1485,6 +1749,10 @@ paint();
 </script>
 </body>
 </html>
+
+
+
+
 
 
 
