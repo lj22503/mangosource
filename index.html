@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"/>
@@ -233,6 +233,13 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
   .row .d{font-size:13px}
   .row .m{text-align:left;font-size:11px;margin-top:2px}
 }
+/* Skill 卡：主体链接 + 复制给 AI */
+.skcard{position:relative}
+.sk-main{display:flex;flex-direction:column;gap:7px;text-decoration:none;color:inherit}
+.sk-copy{align-self:flex-start;margin-top:12px;font-size:11.5px;line-height:1;padding:7px 11px;border:1px solid var(--line2);border-radius:999px;background:#fff;color:var(--soft);cursor:pointer;transition:.16s;font-family:inherit}
+.sk-copy:hover{border-color:var(--accent);color:var(--accent)}
+.kbnuse{margin-top:26px;padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:12.5px;line-height:1.9;color:var(--soft)}
+.kbnuse b{display:block;font-size:12px;color:var(--ink);margin-bottom:6px}
 </style>
 <meta name="description" content="按「你遇到什么」分层的投资资源导航：场景、工具、大师、Skill、词典、提示词。不荐股、不预测，只给能直接用的资源与方法。"/><meta property="og:title" content="MangoSource · 投资资源地图"/><meta property="og:description" content="先看你遇到什么，再给你能直接用的资源与提示词。"/><meta property="og:type" content="website"/><meta property="og:image" content="https://lj22503.github.io/mangosource/assets/card-01-can-i-buy.png"/><meta name="twitter:card" content="summary_large_image"/></head>
 <body>
@@ -255,6 +262,7 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
       <button data-view="skill">投资 Skill</button>
       <button data-view="word">投资词典</button>
       <button data-view="prompt">投资提示词</button>
+<button data-view="kb">AI 知识库</button>
       <span class="soon" data-tip="敬请期待">投资工作台</span>
     </nav>
     <div class="s-meta">
@@ -923,8 +931,9 @@ function skillView(){
   });
   body.appendChild(tabs);
   const grid=el("div","skgrid");
-  SKILLS.filter(s=>skillCat==="全部"||(CATMAP[s[0]]||s[0])===skillCat).forEach(([cat,name,blurb,author,stars,url])=>{
-    const a=el("a","skcard");
+  SKILLS.filter(s=>Array.isArray(s)&&s.length>=6).filter(s=>skillCat==="全部"||(CATMAP[s[0]]||s[0])===skillCat).forEach(([cat,name,blurb,author,stars,url])=>{
+    const card=el("div","skcard");
+    const a=el("a","sk-main");
     a.href=url; a.target="_blank"; a.rel="noopener"; a.setAttribute("data-track","resource_open");a.setAttribute("data-track-sub",name);
     const top=el("div","sk-top");
     top.appendChild(el("span","sk-cat",CATMAP[cat]||cat));
@@ -939,7 +948,18 @@ function skillView(){
     f.appendChild(el("span","sk-sep","·"));
     f.appendChild(el("span","sk-star",author==="SkillHub"?("SkillHub · "+stars):("★ "+stars)));
     a.appendChild(f);
-    grid.appendChild(a);
+    card.appendChild(a);
+    // 复制给 AI：打不开仓库也能用
+    const cp=el("button","sk-copy","复制给 AI");
+    cp.type="button";
+    cp.setAttribute("data-track","copy_skill"); cp.setAttribute("data-track-sub",name);
+    cp.onclick=function(e){
+      e.preventDefault(); e.stopPropagation();
+      const txt="我想用这个 Skill：\n\n名称："+name+"\n作用："+blurb+"\n来源："+url+"（作者 "+author+"，"+stars+"）\n\n请你做两件事：\n1 如果你能访问这个链接，读它的 README，告诉我：它解决什么问题、怎么安装、需要什么数据或 Key、跑通的最小示例。\n2 如果你打不开这个链接，就按名称和你已知的公开信息，给我一个等效做法：需要哪些数据源、几步能跑通、最容易踩的坑是什么。\n\n不要推荐我买任何服务；信息不足就直接说不足。";
+      copyText(txt,cp,"复制给 AI");
+    };
+    card.appendChild(cp);
+    grid.appendChild(card);
   });
   body.appendChild(grid);
 }
@@ -989,6 +1009,133 @@ function openMaster(m){
   $("#ov").classList.add("on"); document.body.style.overflow="hidden";
 }
 
+// ---------- 复制与知识库 ----------
+function copyText(text,btn,label){
+  function fb(t,cb){
+    var ta=document.createElement("textarea"); ta.value=t;
+    ta.style.position="fixed"; ta.style.top="-1000px"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); }catch(e){}
+    ta.remove(); cb();
+  }
+  function done(){ if(btn){ var old=label||btn.textContent; btn.textContent="已复制 ✓"; setTimeout(function(){btn.textContent=old;},1600);} }
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(function(){ fb(text,done); });
+    } else { fb(text,done); }
+  }catch(e){ fb(text,done); }
+}
+function kbMarkdown(full){
+  var L=[];
+  L.push("# MangoSource · 投资资源地图");
+  L.push("");
+  L.push("> 按「你遇到什么」分层的投资资源库。作者：燃冰（10 年金融产品人）。");
+  L.push("> 不荐股、不预测、不承诺收益；每条都写清「什么时候用」。");
+  L.push("> 站点：https://lj22503.github.io/mangosource/");
+  L.push("");
+  L.push("## 一、投资场景（"+SCENES.length+" 条，每条含三步解法与提示词）");
+  SCENES.forEach(function(s,i){
+    if(!full && i>=5) return;
+    L.push("");
+    L.push("### "+(i+1)+". "+s.t);
+    L.push("- 判断："+s.v);
+    if(s.why&&s.why.length){ s.why.forEach(function(w){ L.push("- 卡点："+w); }); }
+    if(s.s1) L.push("- 第一步｜"+s.s1.d+"（"+s.s1.u+"）");
+    if(s.s2) L.push("- 第二步｜"+s.s2.d+"（"+s.s2.u+"）");
+    if(s.s3){ L.push("- 第三步｜"+s.s3.d); L.push("  提示词："); L.push("  ```"); s.s3.p.split("\n").forEach(function(x){ L.push("  "+x); }); L.push("  ```"); }
+    if(s.end) L.push("- 现在就做："+s.end);
+  });
+  L.push("");
+  L.push("## 二、投资工具（"+TOOLS.reduce(function(a,g){return a+g[1].length;},0)+" 条）");
+  TOOLS.forEach(function(g){
+    if(!full && g[1].length>3) { L.push(""); L.push("### "+g[0]); g[1].slice(0,3).forEach(function(t){ L.push("- "+t[0]+"："+t[1]+"（"+t[3]+"，"+t[4]+"）"+t[5]); }); return; }
+    L.push("");
+    L.push("### "+g[0]);
+    g[1].forEach(function(t){ L.push("- "+t[0]+"："+t[1]+"｜"+t[2]+"｜"+t[4]+"｜"+t[5]); });
+  });
+  L.push("");
+  L.push("## 三、投资大师（"+MASTERS.length+" 位）");
+  MASTERS.forEach(function(m){
+    L.push("");
+    L.push("### "+m.name+"（"+m.school+"）");
+    L.push("- 理念："+m.line);
+    if(m.record) L.push("- 战绩："+m.record);
+    if(m.points&&m.points.length){ L.push("- 能学的："); m.points.forEach(function(p){ L.push("  - "+p); }); }
+    if(m.book) L.push("- 书：《"+m.book.t+"》"+m.book.u);
+    if(m.off) L.push("- 官方："+m.off.t+" "+m.off.u);
+  });
+  L.push("");
+  L.push("## 四、投资 Skill（"+SKILLS.length+" 个）");
+  SKILLS.forEach(function(s,i){
+    if(!Array.isArray(s)||s.length<6) return;
+    if(!full && i>=8) return;
+    L.push("- "+s[1]+"（"+(CATMAP[s[0]]||s[0])+"，"+s[3]+"，"+s[4]+"）："+s[2]+" "+s[5]);
+  });
+  L.push("");
+  L.push("## 五、投资词典（"+PERSONAS.length+" 类身份）");
+  PERSONAS.forEach(function(p){
+    L.push("");
+    L.push("### "+p.name+"（"+p.who+"）");
+    if(p.need) p.need.forEach(function(n){ L.push("- 先搞懂："+n); });
+    (p.words||[]).forEach(function(w){ L.push("- "+w[0]+"："+w[1]); });
+  });
+  L.push("");
+  L.push("## 六、投资提示词（"+PROMPTS.length+" 条，可直接复制给 AI）");
+  PROMPTS.forEach(function(p){
+    L.push("");
+    L.push("### "+p[2]+"（"+p[0]+"）");
+    L.push("- 作用："+p[3]);
+    L.push("- 用在："+p[1]);
+    L.push("- 全文：");
+    L.push("```");
+    p[4].split("\n").forEach(function(x){ L.push(x); });
+    L.push("```");
+    L.push("- 它会给你："+p[5]);
+  });
+  L.push("");
+  L.push("---");
+  L.push("使用建议：把整份内容发给 AI，先问「按这个库，我现在最该回答的是哪一类问题」，再逐条深入。");
+  return L.join("\n");
+}
+function kbDownload(){
+  var md=kbMarkdown(true);
+  var blob=new Blob([md],{type:"text/markdown;charset=utf-8"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="mangosource-knowledge.md";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){URL.revokeObjectURL(a.href);},3000);
+  trackEvent("kb_download");
+}
+function kbView(){
+  $("#h1").textContent="AI 知识库";
+  $("#sub").textContent="这个站也可以不进浏览器——整份打包给 AI，或者存成你自己的资料。";
+  var body=$("#body"); body.innerHTML="";
+  var grid=el("div","skgrid");
+  function card(cat,name,blurb,foot,fn){
+    var c=el("div","skcard");
+    var top=el("div","sk-top");
+    top.appendChild(el("span","sk-cat",cat));
+    c.appendChild(top);
+    c.appendChild(el("div","sk-name",name));
+    c.appendChild(el("div","sk-blurb",blurb));
+    var b=el("button","sk-copy",foot); b.type="button"; b.onclick=fn;
+    c.appendChild(b);
+    grid.appendChild(c);
+  }
+  card("整站","复制全部内容给 AI","21 个场景 + 44 个工具 + 19 位大师 + 52 个 Skill + 词典 + 6 条提示词，一次带走。",
+    "复制 Markdown",function(){ copyText(kbMarkdown(true),this,"复制 Markdown"); trackEvent("kb_copy_full"); });
+  card("精选","只复制精选集","每层取前几条，约 5 分钟读完，适合发群或存备忘录。",
+    "复制精选集",function(){ copyText(kbMarkdown(false),this,"复制精选集"); trackEvent("kb_copy_brief"); });
+  card("下载","下载成 .md 文件","存进 Obsidian / Notion / 你的知识库，随时检索。",
+    "下载 knowledge.md",function(){ kbDownload(); });
+  card("收藏","把这个站收起来","桌面按 Ctrl/⌘ + D；手机浏览器「添加到主屏幕」，下次点开就是 App 的样子。",
+    "看怎么收藏",function(){ $("#panel").innerHTML='<button class="x" onclick="closePanel()">✕</button><h2>怎么收藏</h2><div class="sec"><h5>电脑</h5><div class="kv">Ctrl + D（Mac 是 ⌘ + D），存到书签栏。</div></div><div class="sec"><h5>手机</h5><div class="kv">Safari：底部分享按钮 → 添加到主屏幕。<br/>安卓 Chrome：右上角 ⋮ → 添加到主屏幕。<br/>加完就是一个图标，点开即用，不用再找链接。</div></div>'; $("#ov").classList.add("on"); document.body.style.overflow="hidden"; });
+  body.appendChild(grid);
+  var p=el("div","kbnuse");
+  p.innerHTML='<b>怎么用它</b><div>① 复制整站 → 贴给 AI，让它当你私人的投资资料库；<br/>② 只复制精选 → 发群、存备忘录、做成内容集；<br/>③ 下载 .md → 进你自己的知识库，和别的资料一起检索。</div><div style="margin-top:10px">也可以直接打开纯文本版：<a href="knowledge.md" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">knowledge.md ↗</a>　给 AI 抓取的索引：<a href="llms.txt" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">llms.txt ↗</a></div>';
+  body.appendChild(p);
+}
+
 function paint(){
   document.querySelectorAll("#nav button").forEach(function(b){ b.setAttribute("aria-current",b.dataset.view===view); b.setAttribute("data-track","nav"); b.setAttribute("data-track-sub",b.dataset.view); });
   renderTabs();
@@ -997,6 +1144,7 @@ function paint(){
   else if(view==="skill")skillView();
   else if(view==="word")wordView();
   else if(view==="prompt")promptView();
+  else if(view==="kb")kbView();
   else if(view==="desk")rowsView("工作台","一屏把事看完的地方。挑一个当主战场，别都装。",[["常用",DESKS]]);
   else masterView();
   window.scrollTo({top:0});
@@ -1117,6 +1265,8 @@ paint();
 </script>
 </body>
 </html>
+
+
 
 
 
