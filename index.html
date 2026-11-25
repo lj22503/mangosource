@@ -1217,36 +1217,47 @@ function openLock(){
   $("#ov").classList.add("on"); document.body.style.overflow="hidden";
 }
 
-// [名称, 维度[], 来源, 一句, 订阅, 内容, 创作者, 直达链接]
+// [名称, 维度[], 来源, 一句, 数据1, 数据2, 出处, 直达链接]
 const LIB = [
-  ["最全研报知识库",["宏观","个股"],"机构","超百家券商与智库的深度研报：晨会纪要、宏观、策略、行业、公司研究报告。",
-   "58,265 订阅","100 万+ 条","腾讯财经 · ima","https://ima.qq.com/wiki/?shareId=a0ff49161357bd4541252febac6d07d94b587db20568088ac9f985e4178ed681"],
+  ["最全研报知识库",["宏观","个股"],"机构","超百家券商与智库的深度研报：晨会纪要、宏观、策略、行业、公司。",
+   "58,265 订阅","100 万+ 条","腾讯财经","https://ima.qq.com/wiki/?shareId=a0ff49161357bd4541252febac6d07d94b587db20568088ac9f985e4178ed681"],
   ["长安投研",["宏观","个股"],"机构","6 万+ 投行与产业专家调研纪要，每日更新，看机构在一线听到了什么。",
-   "40,059 订阅","6.1 万条","长安卫公 · ima","https://ima.qq.com/wiki/?shareId=f08b5ea60b8e9f49e92d3b0aeeb6c6620fb452183e01e9e82e13d6e8a8d33860"],
-  ["A股证券知识库",["个股"],"机构","沪深京的新闻、公告、研报全在这，一只票的公开信息一次查完，每日更新。",
-   "38,414 订阅","4.4 万条","腾讯自选股 · ima","https://ima.qq.com/wiki/?shareId=d94ef3c8b05decd41a8db4c0c4075f2f3a2fa802c06e3b87891d0cad9ac504f0"],
+   "40,059 订阅","6.1 万条","长安卫公","https://ima.qq.com/wiki/?shareId=f08b5ea60b8e9f49e92d3b0aeeb6c6620fb452183e01e9e82e13d6e8a8d33860"],
+  ["A股证券知识库",["个股"],"机构","沪深京的新闻、公告、研报全在这，一只票的公开信息一次查完。",
+   "38,414 订阅","4.4 万条","腾讯自选股","https://ima.qq.com/wiki/?shareId=d94ef3c8b05decd41a8db4c0c4075f2f3a2fa802c06e3b87891d0cad9ac504f0"],
   ["美股证券知识库",["个股"],"机构","美股新闻、公告、研报整理成中文，问它比翻 10-K 快。",
-   "9,176 订阅","6,217 条","腾讯自选股 · ima","https://ima.qq.com/wiki/?shareId=5b2d6acd1dae78428f88f4acc0b59574276556bc1b2a6d4f3c7d46706ad53e3b"],
+   "9,176 订阅","6,217 条","腾讯自选股","https://ima.qq.com/wiki/?shareId=5b2d6acd1dae78428f88f4acc0b59574276556bc1b2a6d4f3c7d46706ad53e3b"],
+  ["ETF指数基金一站式通关合集",["指数","基金"],"个人","从 ETF 是什么到怎么挑、怎么买，一条路径走完，新手看这份就够。",
+   "已订阅","合集","ima","https://ima.qq.com/wikis?knowledgeBaseId=7475353492667585&subSceneId=6002&needAutoLogin=0&launchChannel="],
+  ["ETF与指数研究库",["指数"],"个人","指数与 ETF 的研究资料库，做指数配置时对照着看。",
+   "已订阅","研究","ima","https://ima.qq.com/wikis?knowledgeBaseId=7494254536433644&subSceneId=6002&needAutoLogin=0&launchChannel="],
+  ["易方达基金",["指数","基金"],"机构","官方知识号：ETF 信息查询、场外基金查询两个 Skill，能反查「哪些 ETF 重仓了这只票」。",
+   "已订阅","官方","易方达基金","https://ima.qq.com/wikis?knowledgeBaseId=7471120793999163&subSceneId=6002&needAutoLogin=0&launchChannel="],
   ["睿远基金投教基地",["方法","基金"],"机构","官方投教：投资全旅程、长期投资、基金定投，四层体系从认知讲到心法。",
-   "266 订阅","433 条","睿远基金 · ima","https://ima.qq.com/wiki/?shareId=43a466d3e91e5ce3da1481247915639c8b4dfcb733e5a6cf6b3b457293a1a55a"],
+   "266 订阅","433 条","睿远基金","https://ima.qq.com/wiki/?shareId=43a466d3e91e5ce3da1481247915639c8b4dfcb733e5a6cf6b3b457293a1a55a"],
+  ["基金投顾（持续更新）",["基金"],"个人","基金投顾业务与实务资料，想看买方投顾怎么做的话从这进。",
+   "已订阅","持续更新","ima","https://ima.qq.com/wikis?knowledgeBaseId=7444971187601779&subSceneId=6002&needAutoLogin=0&launchChannel="],
+  ["孔曼子集思录",["基金"],"个人","集思录老玩家孔曼子的笔记：可转债、打新、套利，都是实操记录。",
+   "已订阅","笔记","ima","https://ima.qq.com/wikis?knowledgeBaseId=7303012095641378&subSceneId=6002&needAutoLogin=0&launchChannel="],
+  ["资产配置与财富管理",["宏观","基金"],"个人","大类资产配置与财富管理的资料，做组合前先看它怎么分。",
+   "已订阅","配置","ima","https://ima.qq.com/wikis?knowledgeBaseId=7306650071359312&subSceneId=6002&needAutoLogin=0&launchChannel="],
+  ["价值投资（巴菲特+芒格）",["方法"],"个人","巴芒的内容合集：股东信、演讲、访谈，一次问完。",
+   "已订阅","合集","ima","https://ima.qq.com/wikis?knowledgeBaseId=7479401843279964&subSceneId=6002&needAutoLogin=0&launchChannel="],
+  ["巴菲特",["方法"],"个人","只放巴菲特：致股东信与历年讲话，查原话用。",
+   "已订阅","专题","ima","https://ima.qq.com/wikis?knowledgeBaseId=7324766130172317&subSceneId=6002&needAutoLogin=0&launchChannel="],
+  ["微积分的投研知识库",["基金","方法"],"个人","多年基金研究的沉淀，按问题检索，适合查具体结论。",
+   "已订阅","投研","ima","https://ima.qq.com/wikis?knowledgeBaseId=7479500631727811&subSceneId=6002&needAutoLogin=0&launchChannel="],
+  ["实战投资智库",["个股","方法"],"个人","实战向的投资方法与案例，偏「怎么下手」。",
+   "已订阅","实战","ima","https://ima.qq.com/wikis?knowledgeBaseId=7369605014122599&subSceneId=6002&needAutoLogin=0&launchChannel="],
+  ["中产理财宝典",["方法"],"个人","中产家庭的理财常识：四笔钱、保险、教育金、养老。",
+   "已订阅","理财","ima","https://ima.qq.com/wikis?knowledgeBaseId=7315260008568743&subSceneId=6002&needAutoLogin=0&launchChannel="],
   ["有知有行 · 资料库",["方法","基金"],"机构","投资第一课、四笔钱、定投、财务盘点——普通人建框架最省力的一条路。",
    "全站","免费","有知有行","https://youzhiyouxing.cn/materials"],
   ["集思录",["基金","方法"],"社区","可转债、REITs、打新、套利的老玩家都在这，数据与话题一起看。",
    "十余年","社区","集思录","https://www.jisilu.cn"],
 ];
-// 库主没生成 shareId 的，只能复制库名去 ima 搜
-const LIB_SEARCH = [
-  ["易方达基金",["指数","基金"],"6,513 订阅","1,906 条","易方达基金","ima_kb_ucfXVhZY","装它的 ETF 查询 Skill，可以反查「我持有的股票被哪些 ETF 重仓」"],
-  ["华夏基金",["基金"],"812 订阅","353 条","华夏基金","ima_kb_pSp4U6Yr","权益好基、产业新知、养基陪伴、ETF 科普六个栏目"],
-  ["A股千亿市值公司财报/研报",["个股","财报"],"10,001 订阅","914 条","腾讯财经","ima_kb_bo5h4Dxf","盯龙头做体检：季报、研报、机构目标价变动"],
-  ["A股银行行业研究",["宏观"],"1,465 订阅","44,205 条","腾讯财经","ima_kb_CxJ9x4PU","通过银行看经济全貌：净息差、利率、楼市都在这条线上"],
-  ["深度行业报告",["个股"],"12,442 订阅","598 条","自然派","ima_kb_5wqu0zFj","从券商与咨询报告里筛精品，不追日更、要质量"],
-  ["华尔街见闻精选内容知识库",["宏观"],"2,221 订阅","100 条","华尔街见闻","ima_kb_i9GEvYvf","7×24 快讯 + 新闻 Skill，热点第一时间抓到"],
-  ["投资方法论",["方法"],"1,053 订阅","3,145 条","WhiteRhino","ima_kb_dpz9EHl6","估值、仓位、流派区别、复利，搭认知框架用"],
-  ["价值投资股票投资知识库",["方法"],"10,017 订阅","1,921 条","Slow is fast","ima_kb_ZYyZaFww","唐朝、散户乙那一套：好公司、好价格、拿住"],
-  ["投资那点事",["方法"],"3,375 订阅","2,588 条","岁盈","ima_kb_YMmXCw1m","把投资还原成人生决策，补方法论补不了的「人性课」"],
-];
-const LIB_CATS = ["全部","指数","个股","基金","财报","宏观","方法"];
+const LIB_SEARCH = [];
+const LIB_CATS = ["全部","指数","个股","基金","宏观","方法"];
 let libCat="全部";
 function libRow(x, direct){
   var a=direct?el("a","librow"):el("div","librow librow-static");
@@ -1487,6 +1498,7 @@ paint();
 </script>
 </body>
 </html>
+
 
 
 
