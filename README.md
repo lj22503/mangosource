@@ -1,4 +1,4 @@
-# MangoSource · 投资资源地图
+﻿# MangoSource · 投资资源地图
 
 按「你遇到什么」分层的投资资源导航。七个层：
 
@@ -10,7 +10,8 @@
 | 投资 Skill | 52 个，GitHub 与 SkillHub 上真实在用的，标作者与星数 |
 | 投资词典 | 9 类身份 × 12 个词，点词进词典 |
 | 投资提示词 | 6 条「say to AI」提示词，按你会问的那句话分 tab，可一键复制 |
-| AI 知识库 | 整站打包成 Markdown：复制全部 / 复制精选 / 下载 .md / 收藏说明 |
+| 投资知识库 | 精选 6 个 ima 知识库（华夏、易方达、华尔街见闻、最全研报、四念、微积分量化价投），教你怎么订阅 |
+| AI 知识库（侧栏底卡） | 整站打包成 Markdown：公开精选 / 进圈领完整版 / 下载 .md / 收藏 |
 | 投资工作台 | 敬请期待 |
 
 作者：燃冰（10 年金融产品人）。做的是投资平权。
@@ -100,3 +101,4 @@ GitHub Pages，主分支根目录：`https://lj22503.github.io/mangosource/`
 cd D:\claudework\mangosource
 git add -A; git commit -m "更新内容"; git push
 ```
+

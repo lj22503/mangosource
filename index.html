@@ -249,6 +249,13 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
 .lock-btn{display:inline-block;margin-top:12px;background:#1b1a17;color:#fcfcf8;font-size:13px;padding:9px 18px;border-radius:999px;text-decoration:none}
 .lock-btn:hover{opacity:.88}
 .lock-n{font-size:11.5px;color:#9a978c;margin-top:10px}
+/* 侧栏底卡：带走这个站 */
+.s-promo-acts{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.s-act{width:100%;height:34px;border:1px solid var(--line2);border-radius:999px;background:#fff;color:var(--ink);font-size:13px;font-family:inherit;cursor:pointer;transition:.16s}
+.s-act:hover{border-color:var(--accent);color:var(--accent)}
+.s-act.on{background:var(--ink);color:#fcfcf8;border-color:var(--ink)}
+.s-promo-link{display:block;margin-top:12px;font-size:12px;color:var(--faint);text-decoration:none;text-align:center}
+.s-promo-link:hover{color:var(--accent)}
 </style>
 <meta name="description" content="按「你遇到什么」分层的投资资源导航：场景、工具、大师、Skill、词典、提示词。不荐股、不预测，只给能直接用的资源与方法。"/><meta property="og:title" content="MangoSource · 投资资源地图"/><meta property="og:description" content="先看你遇到什么，再给你能直接用的资源与提示词。"/><meta property="og:type" content="website"/><meta property="og:image" content="https://lj22503.github.io/mangosource/assets/card-01-can-i-buy.png"/><meta name="twitter:card" content="summary_large_image"/></head>
 <body>
@@ -271,14 +278,18 @@ h1{margin:0;font-family:var(--serif);font-size:34px;line-height:1.35;font-weight
       <button data-view="skill">投资 Skill</button>
       <button data-view="word">投资词典</button>
       <button data-view="prompt">投资提示词</button>
-<button data-view="kb">AI 知识库</button>
+      <button data-view="lib">投资知识库</button>
       <span class="soon" data-tip="敬请期待">投资工作台</span>
     </nav>
     <div class="s-meta">
       <div class="s-promo">
-        <div class="s-promo-name">燃冰的投资平权</div>
-        <div class="s-promo-desc">欢迎进来一起探索如何用 AI 赋能投资和决策。</div>
-        <a class="s-promo-cta" data-track="join_circle" href="https://wx.zsxq.com/group/15554842555282" target="_blank" rel="noopener">加入圈子 ↗</a>
+        <div class="s-promo-name">带走这个站</div>
+        <div class="s-promo-desc">收藏随时回来看，或者打包成 AI 知识库。</div>
+        <div class="s-promo-acts">
+          <button class="s-act" id="actFav" data-track="bookmark">☆ 收藏本站</button>
+          <button class="s-act" data-track="kb_open" onclick="view='kb';paint();">AI 知识库</button>
+        </div>
+        <a class="s-promo-link" data-track="join_circle" href="https://wx.zsxq.com/group/15554842555282" target="_blank" rel="noopener">加入「燃冰的投资平权」↗</a>
       </div>
     </div>
   </aside>
@@ -1161,6 +1172,52 @@ function openLock(){
   $("#ov").classList.add("on"); document.body.style.overflow="hidden";
 }
 
+// ---------- 投资知识库（ima 精选） ----------
+const LIB = [
+  ["机构官方","华夏基金","基金经理观点、产业研究、投教内容与重磅报告，已收录 120+ 篇。","华夏基金"],
+  ["机构官方","易方达基金","首家入驻的公募：5 大基金研选 Skill × 3 个知识库专区。","易方达基金"],
+  ["研报与资讯","华尔街见闻","两个知识库 + 一个 Skill，把财经研究带进 ima。","华尔街见闻"],
+  ["研报与资讯","最全研报知识库","腾讯财经与 ima 合建：2020 年以来超百家券商与智库的深度研报。","最全研报知识库"],
+  ["个人沉淀","四念的知识库","一个人整理的投资知识库 + 年报知识库，收录 50+ 本投资书。","四念"],
+  ["个人沉淀","微积分量化价投","多年基金研究的沉淀，接入 ima 后可以按问题检索。","微积分量化价投"],
+];
+let libCat="全部";
+function libView(){
+  $("#h1").textContent="投资知识库";
+  $("#sub").textContent="这些是别人已经整理好的 AI 知识库，在 ima 里订阅就能问。";
+  var body=$("#body"); body.innerHTML="";
+  var cats=["全部"].concat(LIB.map(function(x){return x[0];}).filter(function(v,i,a){return a.indexOf(v)===i;}));
+  var tabs=el("div","tabs");
+  cats.forEach(function(c){
+    var b=el("button",null,c);
+    b.setAttribute("aria-pressed",c===libCat);
+    b.onclick=function(){ libCat=c; libView(); };
+    tabs.appendChild(b);
+  });
+  body.appendChild(tabs);
+  var grid=el("div","skgrid");
+  LIB.filter(function(x){return libCat==="全部"||x[0]===libCat;}).forEach(function(x){
+    var card=el("div","skcard");
+    var top=el("div","sk-top");
+    top.appendChild(el("span","sk-cat",x[0]));
+    top.appendChild(el("span","sk-arr","↗"));
+    card.appendChild(top);
+    card.appendChild(el("div","sk-name",x[1]));
+    card.appendChild(el("div","sk-blurb",x[2]));
+    card.appendChild(el("div","sk-foot","在 ima 里搜「"+x[3]+"」即可订阅"));
+    var a=el("a","sk-copy","打开 ima ↗");
+    a.href="https://ima.qq.com"; a.target="_blank"; a.rel="noopener";
+    a.setAttribute("data-track","ima_open"); a.setAttribute("data-track-sub",x[1]);
+    a.style.textDecoration="none"; a.style.textAlign="center";
+    card.appendChild(a);
+    grid.appendChild(card);
+  });
+  body.appendChild(grid);
+  var p=el("div","kbnuse");
+  p.innerHTML='<b>怎么用</b><div>① 手机装 ima（或微信搜「ima 知识库」小程序）<br/>② 打开「发现」→ 知识库广场<br/>③ 搜上面的名字，点订阅<br/>④ 订阅后就能像聊天一样问它，答案只从这份知识库里找</div><div style="margin-top:10px">想自己建一个？<a href="https://ima.qq.com" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">ima 官网 ↗</a></div>';
+  body.appendChild(p);
+}
+
 function paint(){
   document.querySelectorAll("#nav button").forEach(function(b){ b.setAttribute("aria-current",b.dataset.view===view); b.setAttribute("data-track","nav"); b.setAttribute("data-track-sub",b.dataset.view); });
   renderTabs();
@@ -1170,6 +1227,7 @@ function paint(){
   else if(view==="word")wordView();
   else if(view==="prompt")promptView();
   else if(view==="kb")kbView();
+  else if(view==="lib")libView();
   else if(view==="desk")rowsView("工作台","一屏把事看完的地方。挑一个当主战场，别都装。",[["常用",DESKS]]);
   else masterView();
   window.scrollTo({top:0});
@@ -1272,6 +1330,30 @@ trackEvent("page_view", { view: view });
   document.querySelectorAll("#nav button").forEach(function(b){ b.addEventListener("click", function(){ setTimeout(close, 60); }); });
   document.getElementById("mlogo").addEventListener("click", function(e){ e.preventDefault(); view="scene"; paint(); close(); });
 })();
+// 收藏本站（本地记住，回来时高亮）
+(function(){
+  var KEY="mangosource_saved";
+  var btn=document.getElementById("actFav");
+  if(!btn) return;
+  function sync(){
+    var on=false;
+    try{ on=localStorage.getItem(KEY)==="1"; }catch(e){}
+    btn.textContent=on?"★ 已收藏":"☆ 收藏本站";
+    btn.classList.toggle("on",on);
+  }
+  btn.addEventListener("click",function(){
+    var on=false;
+    try{ on=localStorage.getItem(KEY)==="1"; }catch(e){}
+    try{ localStorage.setItem(KEY, on?"0":"1"); }catch(e){}
+    trackEvent("bookmark_toggle",{sub:on?"off":"on"});
+    sync();
+    if(!on){
+      var t=document.getElementById("toast");
+      if(t){ t.textContent="已收藏 · 也可以按 Ctrl/⌘+D 存到浏览器书签"; t.classList.add("on"); clearTimeout(window.__t2); window.__t2=setTimeout(function(){t.classList.remove("on");},2200); }
+    }
+  });
+  sync();
+})();
 $("#logo").addEventListener("click",e=>{e.preventDefault();view="scene";paint();});
 document.querySelectorAll("#nav .soon").forEach(function(s){
   s.addEventListener("click",function(){
@@ -1286,6 +1368,8 @@ paint();
 </script>
 </body>
 </html>
+
+
 
 
 
