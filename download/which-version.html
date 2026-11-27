@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>三个版本怎么选 · MangoAdvisor</title>
+<style>
+:root{--ink:#26231f;--soft:#5a544c;--faint:#9b948a;--line:#e6e1d8;--line2:#efeae1;--paper:#fcfcf8;--accent:#c2571a;--warm:#f7f5ef;--serif:"Source Han Serif SC","Songti SC",Georgia,serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Inter","PingFang SC","Microsoft YaHei",system-ui,sans-serif;font-size:14px;line-height:1.7}
+.wrap{max-width:900px;margin:0 auto;padding:40px 24px 80px}
+h1{font-family:var(--serif);font-size:26px;margin:0 0 8px}
+.sub{color:var(--soft);font-size:13px;margin-bottom:26px}
+table{width:100%;border-collapse:collapse;margin:16px 0 26px;font-size:13px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line2)}
+th{font-size:11.5px;color:var(--faint);font-weight:600;background:var(--warm)}
+h2{font-family:var(--serif);font-size:18px;margin:34px 0 10px;padding-top:16px;border-top:1px solid var(--line)}
+h3{font-size:13.5px;margin:20px 0 8px}
+code{background:var(--warm);padding:1px 5px;border-radius:4px;font-size:12.5px}
+pre{background:var(--warm);border:1px solid var(--line2);border-radius:10px;padding:14px 16px;font-size:11.5px;line-height:1.9;overflow-x:auto;color:var(--soft)}
+a{color:var(--accent)}
+.box{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;margin:14px 0}
+.k{font-size:11.5px;color:var(--faint);margin-bottom:4px}
+.dl{display:inline-block;margin-top:8px;background:var(--accent);color:#fff;text-decoration:none;padding:9px 18px;border-radius:999px;font-size:13px}
+.dl:hover{background:#a94a15}
+ul{padding-left:20px;margin:8px 0}
+li{margin:4px 0;color:var(--soft)}
+</style></head><body><div class="wrap">
+<h1>三个版本怎么选</h1>
+<div class="sub">都是同一套内容（14 张表 / 14 个模板 / 场景卡 / Gate），只是装在不同的地方。你不需要会 AI，选一个照着走。</div>
+
+<h2>一句话选</h2>
+<table>
+<tr><th>你的情况</th><th>选这个</th></tr>
+<tr><td>不想上云，客户资料只在自己电脑里</td><td><b>本地文件版</b></td></tr>
+<tr><td>想要一个界面，早上能提醒我今天该联系谁</td><td><b>WorkBuddy 版</b></td></tr>
+<tr><td>客户天天问行情、问产品，我要当场能查，手机上也要用</td><td><b>豆包版</b></td></tr>
+</table>
+
+<h2>三版差在哪</h2>
+<table>
+<tr><th>你每天打开什么</th><td>电脑上一个文件夹 + 一个网页</td><td>WorkBuddy 客户端里的工作台</td><td>手机上的豆包</td></tr>
+<tr><th>会主动提醒你吗</th><td>不会，得自己跑一下</td><td>会，4 个定时任务</td><td>会，自动任务</td></tr>
+<tr><th>能查行情/研报吗</th><td>不能，只给链接</td><td>弱，靠专家团</td><td>强，8 个插件直连</td></tr>
+<tr><th>客户资料在哪</th><td>你自己的电脑</td><td>你自己的电脑</td><td>云端（飞书）</td></tr>
+<tr><th>断网还能用吗</th><td>能</td><td>基本能</td><td>不能</td></tr>
+<tr><th>上手要多久</th><td>半小时</td><td>半天</td><td>1 小时</td></tr>
+</table>
+
+<h2>1 本地文件版</h2>
+<div class="box">
+<div class="k">谁用</div>
+客户名单你不敢往网上传，平时也不怎么用 AI 工具。
+<div class="k" style="margin-top:12px">你打开的是</div>
+你电脑里的一个文件夹，加一个网页（双击就能看）
+<pre>SoloAdvisor-Workbench-v2/
+├── START.md        三分钟上手：先跑哪两条命令
+├── AGENTS.md       写入规则：AI 该写哪张表、别瞎写
+├── CLAUDE.md       干活顺序：查资源 → 七步 → 过 Gate → 落盘
+├── data/           14 张表（客户 / 跟进 / 产品 / 素材 / 活动 / 待办…）
+├── clients/        一人一档：他真正担心什么
+├── templates/      一页纸 / 建议书 / 复盘 / 纪要 / 沙龙 / 交接包
+├── resources/      场景 33 / 工具 28 / Skill 51 / 库 75 / 模板 20
+├── outputs/        交付物（按日期自动命名）
+└── 脚本            board.py 看板 · check.py 体检 · log.py 写表 · bench.py 出网页</pre>
+<div class="k" style="margin-top:12px">第一周你会做什么</div>
+<ol>
+<li>解压，跑 <code>python check.py</code>，看到「通过 7 失败 0」就算装好</li>
+<li>把 <code>data/clients.csv</code> 里 3 行 SAMPLE 换成你自己的客户</li>
+<li>对 AI 说「今天见了张先生，他担心孩子出国那 80 万」，看它自己写进表</li>
+</ol>
+<a class="dl" href="solo-advisor-local-v2.zip">下载这个文件夹（zip，151KB）</a>
+</div>
+
+<h2>2 WorkBuddy 版</h2>
+<div class="box">
+<div class="k">谁用</div>
+你已经在用 WorkBuddy，想要个界面，不想天天自己跑命令。
+<div class="k" style="margin-top:12px">你打开的是</div>
+WorkBuddy 客户端里的一个工作台，点开就能问
+<div class="k" style="margin-top:12px">它替你干的事</div>
+<ul>
+<li>见客户前备料 —— 周备全（会前准备专家）</li>
+<li>持仓诊断 —— 理财财（财富管理专家）</li>
+<li>看行业 —— 严研行（行业研究专家）</li>
+<li>客户有异议 —— 单必成（销售教练）</li>
+<li>早上提醒 —— 4 个定时任务（今日跟进 / 周看板 / Gate 抽检 / 月度盘点）</li>
+</ul>
+<div class="k" style="margin-top:12px">第一周你会做什么</div>
+<ol>
+<li>按配置文档建工作台，粘一段简介</li>
+<li>挂 4 个专家 + 6 个技能</li>
+<li>说「今天该联系谁」，看它能不能读你的客户表</li>
+</ol>
+<a class="dl" href="workbuddy-pack.zip">下载配置包（zip）</a>
+</div>
+
+<h2>3 豆包版</h2>
+<div class="box">
+<div class="k">谁用</div>
+客户天天问行情问产品，你多数时候在手机上，没时间开电脑查。
+<div class="k" style="margin-top:12px">你打开的是</div>
+手机上的豆包，随时能问
+<div class="k" style="margin-top:12px">它替你干的事</div>
+<ul>
+<li>查行情、财报、研报 —— 8 个金融数据插件（万得 / 同花顺 / 东财 / 晨星 / 盈米…）</li>
+<li>客户问题当场答 —— 12 个技能 + 33 条场景卡</li>
+<li>记客户 —— 飞书多维表格 5 张表（客户 / 跟进 / 产品 / 素材 / 待办）</li>
+</ul>
+<div class="k" style="margin-top:12px">第一周你会做什么</div>
+<ol>
+<li>建成工作台，粘简介，挂 4–6 个插件（别全挂，会乱选）</li>
+<li>在飞书照文档建 5 张表</li>
+<li>说「固收+ 现在能买吗」，看它是去查插件还是编数字</li>
+</ol>
+<a class="dl" href="doubao-pack.zip">下载配置包（zip）</a>
+</div>
+
+<h2>能不能换？能，数据不用重做</h2>
+<p>三版用的是同一套字段（客户 14 列、跟进 6 列、产品 12 列），所以：</p>
+<table>
+<tr><th>从 → 到</th><th>做什么</th><th>代价</th></tr>
+<tr><td>本地文件版 → WorkBuddy 版</td><td>文件夹直接挂进去，加 4 专家 6 技能</td><td>半天，数据不用搬</td></tr>
+<tr><td>本地文件版 → 豆包版</td><td>5 张表导成飞书多维表格，资料库传 5 个 md</td><td>半天，数据上云</td></tr>
+<tr><td>WorkBuddy 版 → 豆包版</td><td>本地表导飞书，专家换成插件</td><td>1 天，会丢私密性</td></tr>
+<tr><td>豆包版 → 本地文件版</td><td>飞书表导出 CSV，字段一一对应</td><td>半天，更私密</td></tr>
+</table>
+<p><b>真源只有一份</b>：客户数据在你手里那份才是真源；上了豆包，飞书那份是副本。<br>
+<b>别同时用两套</b>：两个平台各记一半，一定对不上。</p>
+</div></body></html>
